@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>GDDLK · Geometry Dash Demon List</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --bg: #f5f7fb; --surface: #ffffff; --text: #1e293b;
+      --text-secondary: #475569; --border: #e2e8f0; --accent: #2563eb;
+      --accent-light: #dbeafe; --shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+      --card-bg: #ffffff; --input-bg: #f1f5f9;
+      --modal-overlay: rgba(0,0,0,0.5);
+    }
+
+    body.dark {
+      --bg: #0f172a; --surface: #1e293b; --text: #f1f5f9;
+      --text-secondary: #94a3b8; --border: #334155; --accent: #3b82f6;
+      --accent-light: #1e3a5f; --card-bg: #1e293b; --input-bg: #0f172a;
+      --modal-overlay: rgba(0,0,0,0.7);
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Inter', system-ui, sans-serif;
+      background: var(--bg); color: var(--text);
+      transition: 0.3s; min-height: 100vh;
+    }
+
+    header {
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem; display: flex; flex-wrap: wrap;
+      align-items: center; justify-content: space-between; gap: 1rem;
+      box-shadow: var(--shadow); position: sticky; top: 0; z-index: 10;
+    }
+
+    .logo h1 {
+      font-size: 1.8rem; font-weight: 700;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .logo span {
+      font-size: 0.85rem; color: var(--text-secondary); display: block;
+    }
+
+    .controls { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+
+    .list-toggle {
+      display: flex; background: var(--input-bg); border-radius: 2rem;
+      padding: 0.25rem; border: 1px solid var(--border);
+    }
+
+    .list-btn {
+      padding: 0.5rem 1.4rem; border: none; background: transparent;
+      border-radius: 2rem; font-weight: 600; font-size: 0.9rem;
+      cursor: pointer; color: var(--text-secondary); transition: 0.2s;
+    }
+
+    .list-btn.active { background: var(--accent); color: white; }
+
+    .theme-btn {
+      background: var(--input-bg); border: 1px solid var(--border);
+      padding: 0.5rem 1rem; border-radius: 2rem; cursor: pointer;
+      color: var(--text); font-size: 0.9rem;
+    }
+
+    .container { max-width: 1200px; margin: 2rem auto; padding: 0 1.5rem; }
+
+    .list-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 1.8rem; flex-wrap: wrap; gap: 1rem;
+    }
+
+    .list-header h2 { font-size: 1.8rem; }
+
+    .level-count {
+      color: var(--text-secondary); font-size: 0.9rem;
+    }
+
+    .demon-grid { display: flex; flex-direction: column; gap: 0.7rem; }
+
+    .demon-row {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 1.2rem; padding: 0.8rem 1.5rem; display: flex;
+      align-items: center; gap: 1rem; cursor: pointer; transition: 0.2s;
+      box-shadow: var(--shadow);
+    }
+
+    .demon-row:hover { 
+      border-color: var(--accent); transform: translateY(-2px); 
+    }
+
+    .rank {
+      font-weight: 800; font-size: 1.3rem; width: 3.5rem; text-align: center;
+      color: var(--accent); background: var(--accent-light); border-radius: 2rem;
+      padding: 0.3rem 0;
+    }
+
+    .level-info { flex: 1; }
+    .level-name { font-weight: 700; font-size: 1.2rem; }
+    .creator { font-size: 0.85rem; color: var(--text-secondary); }
+    .video-icon { opacity: 0.6; font-size: 0.8rem; margin-left: 0.3rem; }
+
+    .modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: var(--modal-overlay); align-items: center; justify-content: center;
+      z-index: 1000; backdrop-filter: blur(4px);
+    }
+
+    .modal.active { display: flex; }
+
+    .modal-content {
+      background: var(--surface); max-width: 850px; width: 90%;
+      border-radius: 2rem; padding: 1.8rem; position: relative;
+      border: 1px solid var(--border);
+    }
+
+    .close-btn {
+      position: absolute; top: 1rem; right: 1.5rem; font-size: 2rem;
+      background: none; border: none; color: var(--text); cursor: pointer;
+    }
+
+    .video-container {
+      position: relative; padding-bottom: 56.25%; height: 0;
+      border-radius: 1rem; overflow: hidden; margin: 0.8rem 0;
+    }
+
+    .video-container iframe {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      border-radius: 1rem; border: none;
+    }
+
+    .footer {
+      text-align: center; padding: 2rem; color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 600px) {
+      header { flex-direction: column; align-items: flex-start; }
+      .demon-row { padding: 0.7rem 1rem; }
+      .rank { width: 2.8rem; font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <h1>GDDLK</h1>
+      <span>Geometry Dash Demon List</span>
+    </div>
+    <div class="controls">
+      <div class="list-toggle">
+        <button class="list-btn active" data-list="verified">✓ Verified</button>
+        <button class="list-btn" data-list="unverified">⏳ Unverified</button>
+      </div>
+      <button id="themeToggle" class="theme-btn">🌓 Theme</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="list-header">
+      <h2 id="listTitle">📋 Verified Demon List</h2>
+      <span class="level-count" id="levelCount"></span>
+    </div>
+    <div id="listContainer" class="demon-grid">
+      <div style="padding:2rem;text-align:center;color:var(--text-secondary);">Loading...</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    GDDLK © 2024 · Demon list updates coming soon
+  </div>
+
+  <div id="videoModal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" id="closeModal">&times;</button>
+      <h3 id="modalTitle" style="margin-bottom:0.5rem;"></h3>
+      <p id="modalCreator" style="color:var(--text-secondary);margin-bottom:1rem;"></p>
+      <div class="video-container">
+        <iframe id="youtubeFrame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============================================================
+    // СЮДА ВСТАВЛЯТЬ УРОВНИ (кидайте мне, я обновлю)
+    // ============================================================
+    const VERIFIED_DEMONS = [
+      // Пример формата:
+      // { name: "Название", creator: "Автор", videoUrl: "ССЫЛКА" },
+    ];
+
+    const UNVERIFIED_DEMONS = [
+      // { name: "Название", creator: "Автор", videoUrl: "ССЫЛКА" },
+    ];
+    // ============================================================
+
+    let currentList = "verified";
+
+    function getList() {
+      return currentList === "verified" ? VERIFIED_DEMONS : UNVERIFIED_DEMONS;
+    }
+
+    function render() {
+      const list = getList();
+      const container = document.getElementById("listContainer");
+      
+      document.getElementById("levelCount").textContent = 
+        `TOP ${list.length} LEVELS`;
+      
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div style="padding:3rem;text-align:center;color:var(--text-secondary);">
+            <p style="font-size:1.2rem;">📭 No demons in this list yet</p>
+            <p style="margin-top:0.5rem;">Check back soon for updates!</p>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = list.map((d, i) => `
+        <div class="demon-row" data-name="${d.name}" data-creator="${d.creator || 'Unknown'}" data-video="${encodeURIComponent(d.videoUrl || '')}">
+          <div class="rank">#${i + 1}</div>
+          <div class="level-info">
+            <div class="level-name">${d.name} <span class="video-icon">▶️</span></div>
+            <div class="creator">by ${d.creator || 'Unknown'}</div>
+          </div>
+        </div>
+      `).join("");
+
+      document.querySelectorAll(".demon-row").forEach(row => {
+        row.addEventListener("click", function() {
+          openVideo(
+            this.dataset.name,
+            this.dataset.creator,
+            decodeURIComponent(this.dataset.video)
+          );
+        });
+      });
+    }
+
+    function openVideo(name, creator, url) {
+      document.getElementById("modalTitle").textContent = name;
+      document.getElementById("modalCreator").textContent = "by " + (creator || "Unknown");
+      
+      const frame = document.getElementById("youtubeFrame");
+      let videoId = "";
+      
+      if (url) {
+        // Парсим YouTube URL
+        const patterns = [
+          /(?:youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{11})/,
+          /(?:youtu\.be\/)([a-zA-Z0-9_-]{11})/,
+          /(?:youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+          /^([a-zA-Z0-9_-]{11})$/
+        ];
+        
+        for (let p of patterns) {
+          const match = url.match(p);
+          if (match) {
+            videoId = match[1];
+            break;
+          }
+        }
+      }
+      
+      frame.src = videoId 
+        ? `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`
+        : "";
+      
+      document.getElementById("videoModal").classList.add("active");
+    }
+
+    function closeVideo() {
+      document.getElementById("videoModal").classList.remove("active");
+      document.getElementById("youtubeFrame").src = "";
+    }
+
+    function switchList(type) {
+      if (currentList === type) return;
+      currentList = type;
+      
+      document.querySelectorAll(".list-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.list === type);
+      });
+      
+      document.getElementById("listTitle").textContent = 
+        type === "verified" 
+          ? "📋 Verified Demon List" 
+          : "⏳ Unverified Demon List";
+      
+      render();
+    }
+
+    // События
+    document.querySelectorAll(".list-btn").forEach(btn => {
+      btn.addEventListener("click", () => switchList(btn.dataset.list));
+    });
+
+    document.getElementById("themeToggle").addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      localStorage.setItem("gddlk_theme", 
+        document.body.classList.contains("dark") ? "dark" : "light"
+      );
+    });
+
+    document.getElementById("closeModal").addEventListener("click", closeVideo);
+    document.getElementById("videoModal").addEventListener("click", function(e) {
+      if (e.target === this) closeVideo();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeVideo();
+    });
+
+    // Тема при загрузке
+    if (localStorage.getItem("gddlk_theme") === "dark") {
+      document.body.classList.add("dark");
+    }
+
+    // Старт
+    render();
+  </script>
+</body>
+</html>
