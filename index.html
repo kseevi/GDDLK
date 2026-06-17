@@ -353,6 +353,13 @@
       margin-top: 2px;
     }
 
+    .level-meta {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      letter-spacing: 0.5px;
+    }
+
     .play-icon {
       color: var(--accent);
       font-size: 1.3rem;
@@ -421,6 +428,13 @@
       color: var(--text-secondary);
       font-size: 0.9rem;
       margin-top: 3px;
+    }
+
+    .modal-header .verifier {
+      color: var(--verified);
+      font-size: 0.8rem;
+      margin-top: 2px;
+      font-weight: 600;
     }
 
     .modal-close {
@@ -582,6 +596,7 @@
         <div>
           <h3 id="modalTitle">Level Name</h3>
           <div class="creator" id="modalCreator">by Creator</div>
+          <div class="verifier" id="modalVerifier" style="display:none;"></div>
         </div>
         <button class="modal-close" id="closeModal">✕</button>
       </div>
@@ -593,14 +608,20 @@
 
   <script>
     // ============================================================
-    // УРОВНИ (кидайте мне — я обновлю)
+    // ДЕМОН ЛИСТ
     // ============================================================
     const VERIFIED = [
-      // { name: "Название", creator: "Автор", videoUrl: "YouTube ссылка" },
+      {
+        name: "Uncomfortable",
+        creator: "oxyo0",
+        verifier: "7u2",
+        videoUrl: "https://www.youtube.com/watch?v=3aDY4lfFdGk",
+        id: "140768797"
+      },
     ];
 
     const UNVERIFIED = [
-      // { name: "Название", creator: "Автор", videoUrl: "YouTube ссылка" },
+      // { name: "Название", creator: "Автор", verifier: "Верифер", videoUrl: "YouTube ссылка", id: "ID уровня" },
     ];
     // ============================================================
 
@@ -650,11 +671,20 @@
       container.innerHTML = list
         .map(
           (d, i) => `
-        <div class="level-card" data-name="${d.name}" data-creator="${d.creator || "Unknown"}" data-video="${encodeURIComponent(d.videoUrl || "")}">
+        <div class="level-card" 
+             data-name="${d.name}" 
+             data-creator="${d.creator || "Unknown"}" 
+             data-verifier="${d.verifier || ""}" 
+             data-id="${d.id || ""}" 
+             data-video="${encodeURIComponent(d.videoUrl || "")}">
           <div class="rank-badge ${getRankClass(i + 1)}">#${i + 1}</div>
           <div class="level-info">
             <div class="level-name">${d.name}</div>
             <div class="level-creator">by ${d.creator || "Unknown"}</div>
+            <div class="level-meta">
+              ${d.verifier ? `Verified by ${d.verifier}` : ""} 
+              ${d.id ? ` · ID: ${d.id}` : ""}
+            </div>
           </div>
           <div class="play-icon">▶</div>
         </div>`
@@ -667,15 +697,25 @@
           openVideo(
             card.dataset.name,
             card.dataset.creator,
+            card.dataset.verifier,
+            card.dataset.id,
             decodeURIComponent(card.dataset.video)
           );
         });
       });
     }
 
-    function openVideo(name, creator, url) {
+    function openVideo(name, creator, verifier, id, url) {
       document.getElementById("modalTitle").textContent = name;
       document.getElementById("modalCreator").textContent = "by " + (creator || "Unknown");
+      
+      const verifierEl = document.getElementById("modalVerifier");
+      if (verifier) {
+        verifierEl.style.display = "block";
+        verifierEl.textContent = `Verified by ${verifier}` + (id ? ` · ID: ${id}` : "");
+      } else {
+        verifierEl.style.display = "none";
+      }
 
       const frame = document.getElementById("youtubeFrame");
       let videoId = "";
