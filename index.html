@@ -588,7 +588,7 @@
   </main>
 
   <footer class="footer">
-    GDDLK © 2024 &nbsp;·&nbsp; Geometry Dash Demon List &nbsp;·&nbsp; Inspired by Pointercrate
+    GDDLK © 2024 &nbsp;·&nbsp; Geometry Dash Demon List
   </footer>
 
   <!-- Video Modal -->
@@ -628,7 +628,7 @@
     // ============================================================
 
     let currentList = "demon";
-    let isDarkMode = true; // Тёмная тема по умолчанию
+    let isDarkMode = true;
 
     function getList() {
       return currentList === "demon" ? DEMON_LIST : CHALLENGE_LIST;
@@ -666,11 +666,9 @@
       const list = getList();
       const container = document.getElementById("listContainer");
 
-      // Stats
       document.getElementById("statCount").textContent = list.length;
       document.getElementById("statTop").textContent = list.length > 0 ? list[0].name : "—";
 
-      // Badge
       const badge = document.getElementById("heroBadge");
       if (currentList === "demon") {
         badge.className = "hero-badge demon-badge";
@@ -715,7 +713,6 @@
         )
         .join("");
 
-      // Click handlers
       document.querySelectorAll(".level-card").forEach((card) => {
         card.addEventListener("click", () => {
           openVideo(
@@ -783,7 +780,6 @@
       render();
     }
 
-    // Events
     document.querySelectorAll(".tab").forEach((tab) => {
       tab.addEventListener("click", () => switchList(tab.dataset.list));
     });
@@ -802,17 +798,14 @@
       if (e.key === "Escape") closeVideo();
     });
 
-    // Тема при загрузке
     const savedTheme = localStorage.getItem("gddlk_theme");
     if (savedTheme === "light") {
       isDarkMode = false;
     } else {
-      // По умолчанию тёмная (если ничего не сохранено или сохранено "dark")
       isDarkMode = true;
     }
     applyTheme();
 
-    // Start
     render();
   </script>
 </body>
