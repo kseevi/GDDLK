@@ -13,6 +13,7 @@
       box-sizing: border-box;
     }
 
+    /* ТЁМНАЯ ТЕМА ПО УМОЛЧАНИЮ */
     :root {
       --bg-primary: #0a0a0f;
       --bg-secondary: #111118;
@@ -37,6 +38,7 @@
       --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
+    /* СВЕТЛАЯ ТЕМА (активируется классом .light) */
     body.light {
       --bg-primary: #f5f5fa;
       --bg-secondary: #ffffff;
@@ -553,9 +555,9 @@
       <div class="header-actions">
         <div class="tabs" id="tabs">
           <button class="tab active" data-list="demon">◈ Demon List</button>
-          <button class="tab" data-list="challenge">🔥 Challenge</button>
+          <button class="tab" data-list="challenge">🔥 Challenge List</button>
         </div>
-        <button class="icon-btn" id="themeToggle" title="Toggle theme">🌓</button>
+        <button class="icon-btn" id="themeToggle" title="Switch to light theme">☀️</button>
       </div>
     </div>
   </header>
@@ -626,6 +628,7 @@
     // ============================================================
 
     let currentList = "demon";
+    let isDarkMode = true; // Тёмная тема по умолчанию
 
     function getList() {
       return currentList === "demon" ? DEMON_LIST : CHALLENGE_LIST;
@@ -636,6 +639,27 @@
       if (rank === 2) return "top-2";
       if (rank === 3) return "top-3";
       return "";
+    }
+
+    function updateThemeButton() {
+      const btn = document.getElementById("themeToggle");
+      if (isDarkMode) {
+        btn.textContent = "☀️";
+        btn.title = "Switch to light theme";
+      } else {
+        btn.textContent = "🌙";
+        btn.title = "Switch to dark theme";
+      }
+    }
+
+    function applyTheme() {
+      if (isDarkMode) {
+        document.body.classList.remove("light");
+      } else {
+        document.body.classList.add("light");
+      }
+      updateThemeButton();
+      localStorage.setItem("gddlk_theme", isDarkMode ? "dark" : "light");
     }
 
     function render() {
@@ -765,11 +789,8 @@
     });
 
     document.getElementById("themeToggle").addEventListener("click", () => {
-      document.body.classList.toggle("light");
-      localStorage.setItem(
-        "gddlk_theme",
-        document.body.classList.contains("light") ? "light" : "dark"
-      );
+      isDarkMode = !isDarkMode;
+      applyTheme();
     });
 
     document.getElementById("closeModal").addEventListener("click", closeVideo);
@@ -781,10 +802,15 @@
       if (e.key === "Escape") closeVideo();
     });
 
-    // Theme init
-    if (localStorage.getItem("gddlk_theme") === "light") {
-      document.body.classList.add("light");
+    // Тема при загрузке
+    const savedTheme = localStorage.getItem("gddlk_theme");
+    if (savedTheme === "light") {
+      isDarkMode = false;
+    } else {
+      // По умолчанию тёмная (если ничего не сохранено или сохранено "dark")
+      isDarkMode = true;
     }
+    applyTheme();
 
     // Start
     render();
