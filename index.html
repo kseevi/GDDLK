@@ -24,10 +24,10 @@
       --accent: #6c5ce7;
       --accent-glow: rgba(108, 92, 231, 0.3);
       --accent-gradient: linear-gradient(135deg, #6c5ce7, #a855f7);
-      --verified: #00e396;
-      --verified-glow: rgba(0, 227, 150, 0.2);
-      --unverified: #f59e0b;
-      --unverified-glow: rgba(245, 158, 11, 0.2);
+      --demon: #00e396;
+      --demon-glow: rgba(0, 227, 150, 0.2);
+      --challenge: #f59e0b;
+      --challenge-glow: rgba(245, 158, 11, 0.2);
       --border: #1e1e2e;
       --border-light: #2a2a3a;
       --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
@@ -215,16 +215,16 @@
       color: var(--text-secondary);
     }
 
-    .hero-badge.verified-badge {
-      border-color: var(--verified);
-      color: var(--verified);
-      background: var(--verified-glow);
+    .hero-badge.demon-badge {
+      border-color: var(--demon);
+      color: var(--demon);
+      background: var(--demon-glow);
     }
 
-    .hero-badge.unverified-badge {
-      border-color: var(--unverified);
-      color: var(--unverified);
-      background: var(--unverified-glow);
+    .hero-badge.challenge-badge {
+      border-color: var(--challenge);
+      color: var(--challenge);
+      background: var(--challenge-glow);
     }
 
     .hero h2 {
@@ -431,7 +431,7 @@
     }
 
     .modal-header .verifier {
-      color: var(--verified);
+      color: var(--demon);
       font-size: 0.8rem;
       margin-top: 2px;
       font-weight: 600;
@@ -552,8 +552,8 @@
       </div>
       <div class="header-actions">
         <div class="tabs" id="tabs">
-          <button class="tab active" data-list="verified">✓ Verified</button>
-          <button class="tab" data-list="unverified">⏳ Unverified</button>
+          <button class="tab active" data-list="demon">◈ Demon List</button>
+          <button class="tab" data-list="challenge">🔥 Challenge</button>
         </div>
         <button class="icon-btn" id="themeToggle" title="Toggle theme">🌓</button>
       </div>
@@ -562,8 +562,8 @@
 
   <main class="main-container">
     <div class="hero">
-      <div class="hero-badge verified-badge" id="heroBadge">OFFICIAL LIST</div>
-      <h2 id="heroTitle">Verified Demon List</h2>
+      <div class="hero-badge demon-badge" id="heroBadge">OFFICIAL LIST</div>
+      <h2 id="heroTitle">Demon List</h2>
       <div class="hero-stats">
         <div class="stat">
           <div class="stat-value" id="statCount">0</div>
@@ -610,7 +610,11 @@
     // ============================================================
     // ДЕМОН ЛИСТ
     // ============================================================
-    const VERIFIED = [
+    const DEMON_LIST = [
+      // { name: "Название", creator: "Автор", verifier: "Верифер", videoUrl: "YouTube ссылка", id: "ID уровня" },
+    ];
+
+    const CHALLENGE_LIST = [
       {
         name: "Uncomfortable",
         creator: "oxyo0",
@@ -619,16 +623,12 @@
         id: "140768797"
       },
     ];
-
-    const UNVERIFIED = [
-      // { name: "Название", creator: "Автор", verifier: "Верифер", videoUrl: "YouTube ссылка", id: "ID уровня" },
-    ];
     // ============================================================
 
-    let currentList = "verified";
+    let currentList = "demon";
 
     function getList() {
-      return currentList === "verified" ? VERIFIED : UNVERIFIED;
+      return currentList === "demon" ? DEMON_LIST : CHALLENGE_LIST;
     }
 
     function getRankClass(rank) {
@@ -648,21 +648,21 @@
 
       // Badge
       const badge = document.getElementById("heroBadge");
-      if (currentList === "verified") {
-        badge.className = "hero-badge verified-badge";
+      if (currentList === "demon") {
+        badge.className = "hero-badge demon-badge";
         badge.textContent = "OFFICIAL LIST";
-        document.getElementById("heroTitle").textContent = "Verified Demon List";
+        document.getElementById("heroTitle").textContent = "Demon List";
       } else {
-        badge.className = "hero-badge unverified-badge";
-        badge.textContent = "COMMUNITY LIST";
-        document.getElementById("heroTitle").textContent = "Unverified Demon List";
+        badge.className = "hero-badge challenge-badge";
+        badge.textContent = "CHALLENGE LIST";
+        document.getElementById("heroTitle").textContent = "Challenge List";
       }
 
       if (list.length === 0) {
         container.innerHTML = `
           <div class="empty-state">
             <div class="icon">🏆</div>
-            <p>No demons listed yet</p>
+            <p>No ${currentList === "demon" ? "demons" : "challenges"} listed yet</p>
             <span>Check back soon for updates</span>
           </div>`;
         return;
