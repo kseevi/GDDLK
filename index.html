@@ -13,7 +13,6 @@
       box-sizing: border-box;
     }
 
-    /* ТЁМНАЯ ТЕМА ПО УМОЛЧАНИЮ */
     :root {
       --bg-primary: #0a0a0f;
       --bg-secondary: #111118;
@@ -25,20 +24,20 @@
       --accent: #6c5ce7;
       --accent-glow: rgba(108, 92, 231, 0.3);
       --accent-gradient: linear-gradient(135deg, #6c5ce7, #a855f7);
-      --demon: #00e396;
-      --demon-glow: rgba(0, 227, 150, 0.2);
-      --challenge: #f59e0b;
-      --challenge-glow: rgba(245, 158, 11, 0.2);
+      --verified: #00e396;
+      --verified-glow: rgba(0, 227, 150, 0.2);
+      --unverified: #f59e0b;
+      --unverified-glow: rgba(245, 158, 11, 0.2);
+      --challenge: #3b82f6;
+      --challenge-glow: rgba(59, 130, 246, 0.2);
       --border: #1e1e2e;
       --border-light: #2a2a3a;
       --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
       --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.6);
       --radius: 16px;
-      --radius-sm: 10px;
       --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* СВЕТЛАЯ ТЕМА (активируется классом .light) */
     body.light {
       --bg-primary: #f5f5fa;
       --bg-secondary: #ffffff;
@@ -66,7 +65,6 @@
       background-attachment: fixed;
     }
 
-    /* Header */
     .header {
       background: var(--bg-secondary);
       border-bottom: 1px solid var(--border);
@@ -144,15 +142,16 @@
       border-radius: 30px;
       padding: 4px;
       border: 1px solid var(--border);
+      flex-wrap: wrap;
     }
 
     .tab {
-      padding: 0.55rem 1.4rem;
+      padding: 0.5rem 1.2rem;
       border: none;
       background: transparent;
       border-radius: 26px;
       font-weight: 600;
-      font-size: 0.88rem;
+      font-size: 0.82rem;
       cursor: pointer;
       color: var(--text-secondary);
       transition: var(--transition);
@@ -170,7 +169,6 @@
       color: var(--text-primary);
     }
 
-    /* Buttons */
     .icon-btn {
       width: 42px;
       height: 42px;
@@ -191,14 +189,12 @@
       box-shadow: 0 0 20px var(--accent-glow);
     }
 
-    /* Main Container */
     .main-container {
       max-width: 1100px;
       margin: 0 auto;
       padding: 2rem 1.5rem 4rem;
     }
 
-    /* Hero */
     .hero {
       text-align: center;
       margin-bottom: 2.5rem;
@@ -213,20 +209,30 @@
       letter-spacing: 1px;
       text-transform: uppercase;
       margin-bottom: 1rem;
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
     }
 
-    .hero-badge.demon-badge {
-      border-color: var(--demon);
-      color: var(--demon);
-      background: var(--demon-glow);
+    .hero-badge.demon-verified {
+      border: 1px solid var(--verified);
+      color: var(--verified);
+      background: var(--verified-glow);
     }
 
-    .hero-badge.challenge-badge {
-      border-color: var(--challenge);
+    .hero-badge.demon-unverified {
+      border: 1px solid var(--unverified);
+      color: var(--unverified);
+      background: var(--unverified-glow);
+    }
+
+    .hero-badge.challenge-verified {
+      border: 1px solid var(--challenge);
       color: var(--challenge);
       background: var(--challenge-glow);
+    }
+
+    .hero-badge.challenge-unverified {
+      border: 1px solid #ef4444;
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.1);
     }
 
     .hero h2 {
@@ -263,7 +269,6 @@
       letter-spacing: 1px;
     }
 
-    /* List */
     .list-container {
       display: flex;
       flex-direction: column;
@@ -374,7 +379,6 @@
       transform: scale(1.1);
     }
 
-    /* Modal */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -433,7 +437,7 @@
     }
 
     .modal-header .verifier {
-      color: var(--demon);
+      color: var(--verified);
       font-size: 0.8rem;
       margin-top: 2px;
       font-weight: 600;
@@ -474,7 +478,6 @@
       border: none;
     }
 
-    /* Empty State */
     .empty-state {
       text-align: center;
       padding: 4rem 2rem;
@@ -497,7 +500,6 @@
       font-size: 0.85rem;
     }
 
-    /* Footer */
     .footer {
       text-align: center;
       padding: 1.5rem;
@@ -507,7 +509,6 @@
       letter-spacing: 0.5px;
     }
 
-    /* Responsive */
     @media (max-width: 768px) {
       .header-inner {
         flex-direction: column;
@@ -539,6 +540,15 @@
       .level-name {
         font-size: 0.95rem;
       }
+
+      .tabs {
+        gap: 2px;
+      }
+
+      .tab {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+      }
     }
   </style>
 </head>
@@ -554,8 +564,10 @@
       </div>
       <div class="header-actions">
         <div class="tabs" id="tabs">
-          <button class="tab active" data-list="demon">◈ Demon List</button>
-          <button class="tab" data-list="challenge">🔥 Challenge List</button>
+          <button class="tab active" data-list="demon-verified">✓ Demon</button>
+          <button class="tab" data-list="demon-unverified">⏳ Unverified</button>
+          <button class="tab" data-list="challenge-verified">🔥 Challenge</button>
+          <button class="tab" data-list="challenge-unverified">❗ Unv. Challenge</button>
         </div>
         <button class="icon-btn" id="themeToggle" title="Switch to light theme">☀️</button>
       </div>
@@ -564,7 +576,7 @@
 
   <main class="main-container">
     <div class="hero">
-      <div class="hero-badge demon-badge" id="heroBadge">OFFICIAL LIST</div>
+      <div class="hero-badge demon-verified" id="heroBadge">VERIFIED</div>
       <h2 id="heroTitle">Demon List</h2>
       <div class="hero-stats">
         <div class="stat">
@@ -581,7 +593,7 @@
     <div class="list-container" id="listContainer">
       <div class="empty-state">
         <div class="icon">🏆</div>
-        <p>No demons listed yet</p>
+        <p>No levels listed yet</p>
         <span>Check back soon for updates</span>
       </div>
     </div>
@@ -591,7 +603,6 @@
     GDDLK © 2024 &nbsp;·&nbsp; Geometry Dash Demon List
   </footer>
 
-  <!-- Video Modal -->
   <div class="modal-overlay" id="videoModal">
     <div class="modal">
       <div class="modal-header">
@@ -610,13 +621,17 @@
 
   <script>
     // ============================================================
-    // ДЕМОН ЛИСТ
+    // ЧЕТЫРЕ ЛИСТА
     // ============================================================
-    const DEMON_LIST = [
-      // { name: "Название", creator: "Автор", verifier: "Верифер", videoUrl: "YouTube ссылка", id: "ID уровня" },
+    const DEMON_VERIFIED = [
+      // { name: "", creator: "", verifier: "", videoUrl: "", id: "" },
     ];
 
-    const CHALLENGE_LIST = [
+    const DEMON_UNVERIFIED = [
+      // { name: "", creator: "", verifier: "", videoUrl: "", id: "" },
+    ];
+
+    const CHALLENGE_VERIFIED = [
       {
         name: "Uncomfortable",
         creator: "oxyo0",
@@ -625,13 +640,53 @@
         id: "140768797"
       },
     ];
+
+    const CHALLENGE_UNVERIFIED = [
+      // { name: "", creator: "", verifier: "", videoUrl: "", id: "" },
+    ];
     // ============================================================
 
-    let currentList = "demon";
+    let currentList = "demon-verified";
     let isDarkMode = true;
 
     function getList() {
-      return currentList === "demon" ? DEMON_LIST : CHALLENGE_LIST;
+      switch(currentList) {
+        case "demon-verified": return DEMON_VERIFIED;
+        case "demon-unverified": return DEMON_UNVERIFIED;
+        case "challenge-verified": return CHALLENGE_VERIFIED;
+        case "challenge-unverified": return CHALLENGE_UNVERIFIED;
+        default: return DEMON_VERIFIED;
+      }
+    }
+
+    function getListTitle() {
+      switch(currentList) {
+        case "demon-verified": return "Demon List";
+        case "demon-unverified": return "Unverified Demon List";
+        case "challenge-verified": return "Challenge List";
+        case "challenge-unverified": return "Unverified Challenge List";
+        default: return "Demon List";
+      }
+    }
+
+    function getBadgeClass() {
+      switch(currentList) {
+        case "demon-verified": return "demon-verified";
+        case "demon-unverified": return "demon-unverified";
+        case "challenge-verified": return "challenge-verified";
+        case "challenge-unverified": return "challenge-unverified";
+        default: return "demon-verified";
+      }
+    }
+
+    function getBadgeText() {
+      switch(currentList) {
+        case "demon-verified": return "VERIFIED";
+        case "demon-unverified": return "UNVERIFIED";
+        case "challenge-verified": return "VERIFIED";
+        case "challenge-unverified": return "UNVERIFIED";
+        default: return "VERIFIED";
+      }
     }
 
     function getRankClass(rank) {
@@ -670,21 +725,15 @@
       document.getElementById("statTop").textContent = list.length > 0 ? list[0].name : "—";
 
       const badge = document.getElementById("heroBadge");
-      if (currentList === "demon") {
-        badge.className = "hero-badge demon-badge";
-        badge.textContent = "OFFICIAL LIST";
-        document.getElementById("heroTitle").textContent = "Demon List";
-      } else {
-        badge.className = "hero-badge challenge-badge";
-        badge.textContent = "CHALLENGE LIST";
-        document.getElementById("heroTitle").textContent = "Challenge List";
-      }
+      badge.className = "hero-badge " + getBadgeClass();
+      badge.textContent = getBadgeText();
+      document.getElementById("heroTitle").textContent = getListTitle();
 
       if (list.length === 0) {
         container.innerHTML = `
           <div class="empty-state">
             <div class="icon">🏆</div>
-            <p>No ${currentList === "demon" ? "demons" : "challenges"} listed yet</p>
+            <p>No levels listed yet</p>
             <span>Check back soon for updates</span>
           </div>`;
         return;
