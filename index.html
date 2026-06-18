@@ -661,6 +661,13 @@
 
     const DEMON_UNVERIFIED = [
       {
+        name: "Thermos",
+        creator: "vilkabereal",
+        verifier: "",
+        videoUrl: "https://youtu.be/WbcQKI5eE2Y",
+        id: "142918264"
+      },
+      {
         name: "Machine Park",
         creator: "ModularGD",
         verifier: "",
@@ -839,7 +846,6 @@
         verifierEl.style.display = "none";
       }
 
-      // ID с копированием
       const idContainer = document.getElementById("modalId");
       const idValue = document.getElementById("modalIdValue");
       if (id) {
@@ -848,7 +854,6 @@
         idContainer.classList.remove("copied");
         idContainer.title = "Click to copy ID";
         
-        // Удаляем старый обработчик и вешаем новый
         idContainer.onclick = function(e) {
           e.stopPropagation();
           navigator.clipboard.writeText(id).then(() => {
