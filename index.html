@@ -67,7 +67,6 @@
       background-attachment: fixed;
     }
 
-    /* Анимации */
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -843,6 +842,7 @@
 
     const CHALLENGE_UNVERIFIED = [
       { name: "Revolution", creator: "oxyo0", verifier: "", videoUrl: "https://www.youtube.com/watch?v=HukLIaTYo-M", id: "134060764" },
+      { name: "Overclock", creator: "Radishoffical", verifier: "", videoUrl: "https://youtube.com/watch?v=Eq2LXxAbRwk", id: "141237195" },
     ];
 
     const RULES = [
@@ -981,7 +981,6 @@
       document.getElementById("statCount").textContent = list.length;
       document.getElementById("statTop").textContent = list.length > 0 ? list[0].name : "---";
 
-      // Update stat labels
       document.querySelectorAll("[data-lang]").forEach(el => {
         const key = el.getAttribute("data-lang");
         if (translations[currentLang][key]) {
@@ -1115,7 +1114,6 @@
       render();
     }
 
-    // Events
     document.querySelectorAll(".tab").forEach((tab) => {
       tab.addEventListener("click", () => switchList(tab.dataset.list));
     });
@@ -1140,7 +1138,6 @@
       if (e.key === "Escape") closeVideo();
     });
 
-    // Init
     const savedTheme = localStorage.getItem("gddlk_theme");
     isDarkMode = savedTheme !== "light";
     applyTheme();
