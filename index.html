@@ -21,11 +21,11 @@
       --text-primary: #e8e8f0;
       --text-secondary: #8888a0;
       --text-muted: #5a5a72;
-      --accent: #6c5ce7;
-      --accent-glow: rgba(108, 92, 231, 0.3);
-      --accent-gradient: linear-gradient(135deg, #6c5ce7, #a855f7);
-      --verified: #00e396;
-      --verified-glow: rgba(0, 227, 150, 0.2);
+      --accent: #ef4444;
+      --accent-glow: rgba(239, 68, 68, 0.3);
+      --accent-gradient: linear-gradient(135deg, #ef4444, #f97316);
+      --verified: #22c55e;
+      --verified-glow: rgba(34, 197, 94, 0.2);
       --unverified: #f59e0b;
       --unverified-glow: rgba(245, 158, 11, 0.2);
       --challenge: #3b82f6;
@@ -62,9 +62,35 @@
       transition: background 0.3s, color 0.3s;
       -webkit-font-smoothing: antialiased;
       background-image: 
-        radial-gradient(ellipse at 20% 50%, rgba(108, 92, 231, 0.04) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(168, 85, 247, 0.03) 0%, transparent 50%);
+        radial-gradient(ellipse at 20% 50%, rgba(239, 68, 68, 0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(249, 115, 22, 0.03) 0%, transparent 50%);
       background-attachment: fixed;
+    }
+
+    /* Анимации */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.3); }
+      50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.6); }
     }
 
     .header {
@@ -77,6 +103,7 @@
       backdrop-filter: blur(20px);
       background: rgba(17, 17, 24, 0.85);
       transition: 0.3s;
+      animation: fadeIn 0.5s ease;
     }
 
     body.light .header {
@@ -111,6 +138,7 @@
       font-weight: 900;
       color: white;
       box-shadow: 0 4px 15px var(--accent-glow);
+      animation: pulse 3s infinite;
     }
 
     .logo-text h1 {
@@ -135,6 +163,7 @@
       display: flex;
       align-items: center;
       gap: 0.6rem;
+      flex-wrap: wrap;
     }
 
     .tabs {
@@ -164,6 +193,7 @@
       background: var(--accent);
       color: #fff;
       box-shadow: 0 4px 15px var(--accent-glow);
+      animation: glow 2s infinite;
     }
 
     .tab:hover:not(.active) {
@@ -188,6 +218,23 @@
     .icon-btn:hover {
       border-color: var(--accent);
       box-shadow: 0 0 20px var(--accent-glow);
+      animation: pulse 0.5s;
+    }
+
+    .lang-btn {
+      padding: 0.5rem 0.8rem;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .lang-btn:hover {
+      border-color: var(--accent);
     }
 
     .main-container {
@@ -199,6 +246,7 @@
     .hero {
       text-align: center;
       margin-bottom: 2.5rem;
+      animation: fadeInUp 0.6s ease;
     }
 
     .hero-badge {
@@ -294,7 +342,14 @@
       transition: var(--transition);
       position: relative;
       overflow: hidden;
+      animation: slideIn 0.4s ease both;
     }
+
+    .level-card:nth-child(1) { animation-delay: 0.05s; }
+    .level-card:nth-child(2) { animation-delay: 0.1s; }
+    .level-card:nth-child(3) { animation-delay: 0.15s; }
+    .level-card:nth-child(4) { animation-delay: 0.2s; }
+    .level-card:nth-child(5) { animation-delay: 0.25s; }
 
     .level-card::before {
       content: '';
@@ -325,7 +380,7 @@
       min-width: 3rem;
       text-align: center;
       color: var(--accent);
-      background: rgba(108, 92, 231, 0.1);
+      background: rgba(239, 68, 68, 0.1);
       border-radius: 25px;
       padding: 0.3rem 0.6rem;
     }
@@ -335,6 +390,7 @@
       color: #000;
       font-size: 1.2rem;
       box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+      animation: glow 2s infinite;
     }
 
     .rank-badge.top-2 {
@@ -386,12 +442,12 @@
       transform: scale(1.1);
     }
 
-    /* Rules Page */
     .rules-content {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 2rem;
+      animation: fadeInUp 0.5s ease;
     }
 
     .rules-content h3 {
@@ -406,11 +462,17 @@
       padding: 1rem 0;
       border-bottom: 1px solid var(--border);
       align-items: flex-start;
+      animation: slideIn 0.4s ease both;
     }
 
-    .rule-item:last-child {
-      border-bottom: none;
-    }
+    .rule-item:nth-child(1) { animation-delay: 0.1s; }
+    .rule-item:nth-child(2) { animation-delay: 0.2s; }
+    .rule-item:nth-child(3) { animation-delay: 0.3s; }
+    .rule-item:nth-child(4) { animation-delay: 0.4s; }
+    .rule-item:nth-child(5) { animation-delay: 0.5s; }
+    .rule-item:nth-child(6) { animation-delay: 0.6s; }
+
+    .rule-item:last-child { border-bottom: none; }
 
     .rule-number {
       font-weight: 800;
@@ -423,6 +485,10 @@
       padding: 0.2rem 0.5rem;
     }
 
+    .rule-item:hover .rule-number {
+      animation: pulse 0.5s;
+    }
+
     .rule-text {
       flex: 1;
       font-size: 0.95rem;
@@ -430,7 +496,6 @@
       color: var(--text-secondary);
     }
 
-    /* Modal */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -445,6 +510,7 @@
 
     .modal-overlay.active {
       display: flex;
+      animation: fadeIn 0.3s ease;
     }
 
     .modal {
@@ -455,18 +521,7 @@
       width: 100%;
       overflow: hidden;
       box-shadow: var(--shadow-lg);
-      animation: modalIn 0.3s ease;
-    }
-
-    @keyframes modalIn {
-      from {
-        opacity: 0;
-        transform: scale(0.95) translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-      }
+      animation: fadeInUp 0.3s ease;
     }
 
     .modal-header {
@@ -511,7 +566,7 @@
     .modal-id:hover {
       color: var(--accent);
       border-color: var(--accent);
-      background: rgba(108, 92, 231, 0.1);
+      background: rgba(239, 68, 68, 0.1);
     }
 
     .modal-id.copied {
@@ -560,6 +615,7 @@
       text-align: center;
       padding: 4rem 2rem;
       color: var(--text-muted);
+      animation: fadeIn 0.5s ease;
     }
 
     .empty-state .icon {
@@ -637,17 +693,18 @@
         <div class="logo-icon">GD</div>
         <div class="logo-text">
           <h1>GDDLK</h1>
-          <span>Demon List</span>
+          <span data-lang="logo">Demon List</span>
         </div>
       </div>
       <div class="header-actions">
         <div class="tabs" id="tabs">
-          <button class="tab active" data-list="demon-verified">Demon List</button>
-          <button class="tab" data-list="demon-unverified">Unverified Demon List</button>
-          <button class="tab" data-list="challenge-verified">Challenge List</button>
-          <button class="tab" data-list="challenge-unverified">Unverified Challenge List</button>
-          <button class="tab" data-list="rules">Rules</button>
+          <button class="tab active" data-list="demon-verified" data-lang="tab1">Demon List</button>
+          <button class="tab" data-list="demon-unverified" data-lang="tab2">Unverified Demons</button>
+          <button class="tab" data-list="challenge-verified" data-lang="tab3">Challenge List</button>
+          <button class="tab" data-list="challenge-unverified" data-lang="tab4">Unverified Challenges</button>
+          <button class="tab" data-list="rules" data-lang="tab5">Rules</button>
         </div>
+        <button class="lang-btn" id="langToggle">RU</button>
         <button class="icon-btn" id="themeToggle" title="Switch to light theme">Light</button>
       </div>
     </div>
@@ -655,16 +712,16 @@
 
   <main class="main-container">
     <div class="hero">
-      <div class="hero-badge demon-verified" id="heroBadge">VERIFIED</div>
-      <h2 id="heroTitle">Demon List</h2>
+      <div class="hero-badge demon-verified" id="heroBadge" data-lang="badge">VERIFIED</div>
+      <h2 id="heroTitle" data-lang="title">Demon List</h2>
       <div class="hero-stats" id="heroStats">
         <div class="stat">
           <div class="stat-value" id="statCount">0</div>
-          <div class="stat-label">Levels</div>
+          <div class="stat-label" data-lang="stat1">Levels</div>
         </div>
         <div class="stat">
           <div class="stat-value" id="statTop">---</div>
-          <div class="stat-label">Number 1</div>
+          <div class="stat-label" data-lang="stat2">Number 1</div>
         </div>
       </div>
     </div>
@@ -673,15 +730,15 @@
       <div class="list-container" id="listContainer">
         <div class="empty-state">
           <div class="icon">#</div>
-          <p>No levels listed yet</p>
-          <span>Check back soon for updates</span>
+          <p data-lang="empty1">No levels listed yet</p>
+          <span data-lang="empty2">Check back soon for updates</span>
         </div>
       </div>
     </div>
   </main>
 
   <footer class="footer">
-    GDDLK &nbsp;&middot;&nbsp; Geometry Dash Demon List
+    GDDLK &nbsp;&middot;&nbsp; <span data-lang="footer">Geometry Dash Demon List</span>
   </footer>
 
   <div class="modal-overlay" id="videoModal">
@@ -703,7 +760,71 @@
 
   <script>
     // ============================================================
-    // FOUR LISTS + RULES
+    // TRANSLATIONS
+    // ============================================================
+    const translations = {
+      en: {
+        logo: "Demon List",
+        tab1: "Demon List",
+        tab2: "Unverified Demons",
+        tab3: "Challenge List",
+        tab4: "Unverified Challenges",
+        tab5: "Rules",
+        badge_verified: "VERIFIED",
+        badge_unverified: "UNVERIFIED",
+        badge_rules: "INFORMATION",
+        title_demon: "Demon List",
+        title_demon_unverified: "Unverified Demon List",
+        title_challenge: "Challenge List",
+        title_challenge_unverified: "Unverified Challenge List",
+        title_rules: "Rules",
+        stat1: "Levels",
+        stat2: "Number 1",
+        empty1: "No levels listed yet",
+        empty2: "Check back soon for updates",
+        footer: "Geometry Dash Demon List",
+        rules_title: "Rules for getting your level on the list",
+        verified_by: "Verified by",
+        by: "by",
+        copy_id: "Click to copy ID",
+        copied: "Copied!",
+        verifier_label: "Verified by",
+        theme_light: "Light",
+        theme_dark: "Dark"
+      },
+      ru: {
+        logo: "Демон Лист",
+        tab1: "Демон Лист",
+        tab2: "Непроверенные Демоны",
+        tab3: "Челлендж Лист",
+        tab4: "Непроверенные Челленджи",
+        tab5: "Правила",
+        badge_verified: "ПРОВЕРЕНО",
+        badge_unverified: "НЕПРОВЕРЕНО",
+        badge_rules: "ИНФОРМАЦИЯ",
+        title_demon: "Демон Лист",
+        title_demon_unverified: "Непроверенный Демон Лист",
+        title_challenge: "Челлендж Лист",
+        title_challenge_unverified: "Непроверенный Челлендж Лист",
+        title_rules: "Правила",
+        stat1: "Уровней",
+        stat2: "Номер 1",
+        empty1: "Пока нет уровней",
+        empty2: "Скоро здесь будут обновления",
+        footer: "Geometry Dash Демон Лист",
+        rules_title: "Правила для попадания уровня в лист",
+        verified_by: "Проверен",
+        by: "от",
+        copy_id: "Нажми чтобы скопировать ID",
+        copied: "Скопировано!",
+        verifier_label: "Проверен",
+        theme_light: "Свет",
+        theme_dark: "Тьма"
+      }
+    };
+
+    // ============================================================
+    // DATA
     // ============================================================
     const DEMON_VERIFIED = [
       { name: "Dreamstep", creator: "noc621", verifier: "Knockie", videoUrl: "https://youtu.be/bF1U4AYQtPk", id: "130175576" },
@@ -732,10 +853,26 @@
       "bla bla bla",
       "Doggie got 13% on Grief???!!!!",
     ];
-    // ============================================================
 
+    const RULES_RU = [
+      "Уровень не должен состоять ПОЛНОСТЬЮ из спама",
+      "В уровне не должно быть копипасты, желательно",
+      "Декорируй как хочешь, даже если это ужасно",
+      "Старайтесь над уровнями",
+      "бла бла бла",
+      "Doggie got 13% on Grief???!!!!",
+    ];
+
+    // ============================================================
+    // STATE
+    // ============================================================
     let currentList = "demon-verified";
     let isDarkMode = true;
+    let currentLang = "en";
+
+    function t(key) {
+      return translations[currentLang][key] || key;
+    }
 
     function getList() {
       switch(currentList) {
@@ -749,12 +886,12 @@
 
     function getListTitle() {
       switch(currentList) {
-        case "demon-verified": return "Demon List";
-        case "demon-unverified": return "Unverified Demon List";
-        case "challenge-verified": return "Challenge List";
-        case "challenge-unverified": return "Unverified Challenge List";
-        case "rules": return "Rules";
-        default: return "Demon List";
+        case "demon-verified": return t("title_demon");
+        case "demon-unverified": return t("title_demon_unverified");
+        case "challenge-verified": return t("title_challenge");
+        case "challenge-unverified": return t("title_challenge_unverified");
+        case "rules": return t("title_rules");
+        default: return t("title_demon");
       }
     }
 
@@ -770,14 +907,8 @@
     }
 
     function getBadgeText() {
-      switch(currentList) {
-        case "demon-verified": return "Verified";
-        case "demon-unverified": return "Unverified";
-        case "challenge-verified": return "Verified";
-        case "challenge-unverified": return "Unverified";
-        case "rules": return "Information";
-        default: return "Verified";
-      }
+      if (currentList === "rules") return t("badge_rules");
+      return (currentList === "demon-verified" || currentList === "challenge-verified") ? t("badge_verified") : t("badge_unverified");
     }
 
     function getRankClass(rank) {
@@ -787,9 +918,24 @@
       return "";
     }
 
+    function updateLangButton() {
+      document.getElementById("langToggle").textContent = currentLang === "en" ? "RU" : "EN";
+    }
+
+    function applyLanguage() {
+      document.querySelectorAll("[data-lang]").forEach(el => {
+        const key = el.getAttribute("data-lang");
+        if (translations[currentLang][key]) {
+          el.textContent = translations[currentLang][key];
+        }
+      });
+      updateLangButton();
+      render();
+    }
+
     function updateThemeButton() {
       const btn = document.getElementById("themeToggle");
-      btn.textContent = isDarkMode ? "Light" : "Dark";
+      btn.textContent = isDarkMode ? t("theme_light") : t("theme_dark");
       btn.title = isDarkMode ? "Switch to light theme" : "Switch to dark theme";
     }
 
@@ -814,10 +960,11 @@
 
       if (currentList === "rules") {
         heroStats.style.display = "none";
+        const rulesArr = currentLang === "ru" ? RULES_RU : RULES;
         container.innerHTML = `
           <div class="rules-content">
-            <h3>Rules for getting your level on the list</h3>
-            ${RULES.map((rule, i) => `
+            <h3>${t("rules_title")}</h3>
+            ${rulesArr.map((rule, i) => `
               <div class="rule-item">
                 <div class="rule-number">${i + 1}</div>
                 <div class="rule-text">${rule}</div>
@@ -834,13 +981,21 @@
       document.getElementById("statCount").textContent = list.length;
       document.getElementById("statTop").textContent = list.length > 0 ? list[0].name : "---";
 
+      // Update stat labels
+      document.querySelectorAll("[data-lang]").forEach(el => {
+        const key = el.getAttribute("data-lang");
+        if (translations[currentLang][key]) {
+          el.textContent = translations[currentLang][key];
+        }
+      });
+
       if (list.length === 0) {
         container.innerHTML = `
           <div class="list-container">
             <div class="empty-state">
               <div class="icon">#</div>
-              <p>No levels listed yet</p>
-              <span>Check back soon for updates</span>
+              <p>${t("empty1")}</p>
+              <span>${t("empty2")}</span>
             </div>
           </div>`;
         return;
@@ -858,9 +1013,9 @@
               <div class="rank-badge ${getRankClass(i + 1)}">#${i + 1}</div>
               <div class="level-info">
                 <div class="level-name">${d.name}</div>
-                <div class="level-creator">by ${d.creator || "Unknown"}</div>
+                <div class="level-creator">${t("by")} ${d.creator || "Unknown"}</div>
                 <div class="level-meta">
-                  ${d.verifier ? `Verified by ${d.verifier}` : ""} 
+                  ${d.verifier ? t("verified_by") + " " + d.verifier : ""} 
                   ${d.id ? ` \u00b7 ID: ${d.id}` : ""}
                 </div>
               </div>
@@ -885,12 +1040,12 @@
 
     function openVideo(name, creator, verifier, id, url) {
       document.getElementById("modalTitle").textContent = name;
-      document.getElementById("modalCreator").textContent = "by " + (creator || "Unknown");
+      document.getElementById("modalCreator").textContent = t("by") + " " + (creator || "Unknown");
       
       const verifierEl = document.getElementById("modalVerifier");
       if (verifier) {
         verifierEl.style.display = "block";
-        verifierEl.textContent = "Verified by " + verifier;
+        verifierEl.textContent = t("verified_by") + " " + verifier;
       } else {
         verifierEl.style.display = "none";
       }
@@ -901,16 +1056,16 @@
         idContainer.style.display = "inline-block";
         idValue.textContent = id;
         idContainer.classList.remove("copied");
-        idContainer.title = "Click to copy ID";
+        idContainer.title = t("copy_id");
         
         idContainer.onclick = function(e) {
           e.stopPropagation();
           navigator.clipboard.writeText(id).then(() => {
             idContainer.classList.add("copied");
-            idContainer.title = "Copied!";
+            idContainer.title = t("copied");
             setTimeout(() => {
               idContainer.classList.remove("copied");
-              idContainer.title = "Click to copy ID";
+              idContainer.title = t("copy_id");
             }, 1500);
           });
         };
@@ -960,6 +1115,7 @@
       render();
     }
 
+    // Events
     document.querySelectorAll(".tab").forEach((tab) => {
       tab.addEventListener("click", () => switchList(tab.dataset.list));
     });
@@ -967,6 +1123,12 @@
     document.getElementById("themeToggle").addEventListener("click", () => {
       isDarkMode = !isDarkMode;
       applyTheme();
+    });
+
+    document.getElementById("langToggle").addEventListener("click", () => {
+      currentLang = currentLang === "en" ? "ru" : "en";
+      applyLanguage();
+      localStorage.setItem("gddlk_lang", currentLang);
     });
 
     document.getElementById("closeModal").addEventListener("click", closeVideo);
@@ -978,9 +1140,14 @@
       if (e.key === "Escape") closeVideo();
     });
 
+    // Init
     const savedTheme = localStorage.getItem("gddlk_theme");
     isDarkMode = savedTheme !== "light";
     applyTheme();
+
+    const savedLang = localStorage.getItem("gddlk_lang");
+    currentLang = savedLang || "en";
+    applyLanguage();
 
     render();
   </script>
