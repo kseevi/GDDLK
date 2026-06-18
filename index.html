@@ -421,7 +421,7 @@
       border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
     }
 
     .modal-header h3 {
@@ -442,6 +442,31 @@
       font-weight: 600;
     }
 
+    .modal-id {
+      margin-top: 6px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      user-select: all;
+    }
+
+    .modal-id:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: rgba(108, 92, 231, 0.1);
+    }
+
+    .modal-id.copied {
+      color: var(--verified);
+      border-color: var(--verified);
+      background: var(--verified-glow);
+    }
+
     .modal-close {
       width: 36px;
       height: 36px;
@@ -455,6 +480,7 @@
       align-items: center;
       justify-content: center;
       transition: var(--transition);
+      flex-shrink: 0;
     }
 
     .modal-close:hover {
@@ -609,6 +635,7 @@
           <h3 id="modalTitle">Level Name</h3>
           <div class="creator" id="modalCreator">by Creator</div>
           <div class="verifier" id="modalVerifier" style="display:none;"></div>
+          <div class="modal-id" id="modalId" style="display:none;" title="Click to copy ID">ID: <span id="modalIdValue"></span></div>
         </div>
         <button class="modal-close" id="closeModal">X</button>
       </div>
@@ -807,9 +834,34 @@
       const verifierEl = document.getElementById("modalVerifier");
       if (verifier) {
         verifierEl.style.display = "block";
-        verifierEl.textContent = "Verified by " + verifier + (id ? " \u00b7 ID: " + id : "");
+        verifierEl.textContent = "Verified by " + verifier;
       } else {
         verifierEl.style.display = "none";
+      }
+
+      // ID с копированием
+      const idContainer = document.getElementById("modalId");
+      const idValue = document.getElementById("modalIdValue");
+      if (id) {
+        idContainer.style.display = "inline-block";
+        idValue.textContent = id;
+        idContainer.classList.remove("copied");
+        idContainer.title = "Click to copy ID";
+        
+        // Удаляем старый обработчик и вешаем новый
+        idContainer.onclick = function(e) {
+          e.stopPropagation();
+          navigator.clipboard.writeText(id).then(() => {
+            idContainer.classList.add("copied");
+            idContainer.title = "Copied!";
+            setTimeout(() => {
+              idContainer.classList.remove("copied");
+              idContainer.title = "Click to copy ID";
+            }, 1500);
+          });
+        };
+      } else {
+        idContainer.style.display = "none";
       }
 
       const frame = document.getElementById("youtubeFrame");
