@@ -556,7 +556,7 @@
   <header class="header">
     <div class="header-inner">
       <div class="logo-group">
-        <div class="logo-icon">⬡</div>
+        <div class="logo-icon">GD</div>
         <div class="logo-text">
           <h1>GDDLK</h1>
           <span>Demon List</span>
@@ -564,12 +564,12 @@
       </div>
       <div class="header-actions">
         <div class="tabs" id="tabs">
-          <button class="tab active" data-list="demon-verified">✓ Demon</button>
-          <button class="tab" data-list="demon-unverified">⏳ Unverified</button>
-          <button class="tab" data-list="challenge-verified">🔥 Challenge</button>
-          <button class="tab" data-list="challenge-unverified">❗ Unv. Challenge</button>
+          <button class="tab active" data-list="demon-verified">Demon List</button>
+          <button class="tab" data-list="demon-unverified">Unverified Demon List</button>
+          <button class="tab" data-list="challenge-verified">Challenge List</button>
+          <button class="tab" data-list="challenge-unverified">Unverified Challenge List</button>
         </div>
-        <button class="icon-btn" id="themeToggle" title="Switch to light theme">☀️</button>
+        <button class="icon-btn" id="themeToggle" title="Switch to light theme">Light</button>
       </div>
     </div>
   </header>
@@ -584,15 +584,15 @@
           <div class="stat-label">Levels</div>
         </div>
         <div class="stat">
-          <div class="stat-value" id="statTop">—</div>
-          <div class="stat-label">#1 Demon</div>
+          <div class="stat-value" id="statTop">---</div>
+          <div class="stat-label">Number 1</div>
         </div>
       </div>
     </div>
 
     <div class="list-container" id="listContainer">
       <div class="empty-state">
-        <div class="icon">🏆</div>
+        <div class="icon">#</div>
         <p>No levels listed yet</p>
         <span>Check back soon for updates</span>
       </div>
@@ -600,7 +600,7 @@
   </main>
 
   <footer class="footer">
-    GDDLK © 2024 &nbsp;·&nbsp; Geometry Dash Demon List
+    GDDLK &nbsp;&middot;&nbsp; Geometry Dash Demon List
   </footer>
 
   <div class="modal-overlay" id="videoModal">
@@ -611,7 +611,7 @@
           <div class="creator" id="modalCreator">by Creator</div>
           <div class="verifier" id="modalVerifier" style="display:none;"></div>
         </div>
-        <button class="modal-close" id="closeModal">✕</button>
+        <button class="modal-close" id="closeModal">X</button>
       </div>
       <div class="video-wrapper">
         <iframe id="youtubeFrame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -621,7 +621,7 @@
 
   <script>
     // ============================================================
-    // ЧЕТЫРЕ ЛИСТА
+    // FOUR LISTS
     // ============================================================
     const DEMON_VERIFIED = [
       // { name: "", creator: "", verifier: "", videoUrl: "", id: "" },
@@ -681,11 +681,11 @@
 
     function getBadgeText() {
       switch(currentList) {
-        case "demon-verified": return "VERIFIED";
-        case "demon-unverified": return "UNVERIFIED";
-        case "challenge-verified": return "VERIFIED";
-        case "challenge-unverified": return "UNVERIFIED";
-        default: return "VERIFIED";
+        case "demon-verified": return "Verified";
+        case "demon-unverified": return "Unverified";
+        case "challenge-verified": return "Verified";
+        case "challenge-unverified": return "Unverified";
+        default: return "Verified";
       }
     }
 
@@ -699,10 +699,10 @@
     function updateThemeButton() {
       const btn = document.getElementById("themeToggle");
       if (isDarkMode) {
-        btn.textContent = "☀️";
+        btn.textContent = "Light";
         btn.title = "Switch to light theme";
       } else {
-        btn.textContent = "🌙";
+        btn.textContent = "Dark";
         btn.title = "Switch to dark theme";
       }
     }
@@ -722,7 +722,7 @@
       const container = document.getElementById("listContainer");
 
       document.getElementById("statCount").textContent = list.length;
-      document.getElementById("statTop").textContent = list.length > 0 ? list[0].name : "—";
+      document.getElementById("statTop").textContent = list.length > 0 ? list[0].name : "---";
 
       const badge = document.getElementById("heroBadge");
       badge.className = "hero-badge " + getBadgeClass();
@@ -732,7 +732,7 @@
       if (list.length === 0) {
         container.innerHTML = `
           <div class="empty-state">
-            <div class="icon">🏆</div>
+            <div class="icon">#</div>
             <p>No levels listed yet</p>
             <span>Check back soon for updates</span>
           </div>`;
@@ -754,7 +754,7 @@
             <div class="level-creator">by ${d.creator || "Unknown"}</div>
             <div class="level-meta">
               ${d.verifier ? `Verified by ${d.verifier}` : ""} 
-              ${d.id ? ` · ID: ${d.id}` : ""}
+              ${d.id ? ` \u00b7 ID: ${d.id}` : ""}
             </div>
           </div>
           <div class="play-icon">▶</div>
@@ -782,7 +782,7 @@
       const verifierEl = document.getElementById("modalVerifier");
       if (verifier) {
         verifierEl.style.display = "block";
-        verifierEl.textContent = `Verified by ${verifier}` + (id ? ` · ID: ${id}` : "");
+        verifierEl.textContent = "Verified by " + verifier + (id ? " \u00b7 ID: " + id : "");
       } else {
         verifierEl.style.display = "none";
       }
