@@ -30,6 +30,8 @@
       --unverified-glow: rgba(245, 158, 11, 0.2);
       --challenge: #3b82f6;
       --challenge-glow: rgba(59, 130, 246, 0.2);
+      --rules: #ec4899;
+      --rules-glow: rgba(236, 72, 153, 0.2);
       --border: #1e1e2e;
       --border-light: #2a2a3a;
       --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
@@ -234,6 +236,12 @@
       background: rgba(239, 68, 68, 0.1);
     }
 
+    .hero-badge.rules {
+      border: 1px solid var(--rules);
+      color: var(--rules);
+      background: var(--rules-glow);
+    }
+
     .hero h2 {
       font-size: 2.4rem;
       font-weight: 800;
@@ -378,6 +386,63 @@
       transform: scale(1.1);
     }
 
+    /* Rules Page */
+    .rules-content {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+    }
+
+    .rules-content h3 {
+      font-size: 1.4rem;
+      margin-bottom: 1.5rem;
+      color: var(--rules);
+    }
+
+    .rule-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+    }
+
+    .rule-item:last-child {
+      border-bottom: none;
+    }
+
+    .rule-number {
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--rules);
+      min-width: 2rem;
+      text-align: center;
+      background: var(--rules-glow);
+      border-radius: 10px;
+      padding: 0.2rem 0.5rem;
+    }
+
+    .rule-text {
+      flex: 1;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    .news-box {
+      background: var(--bg-card);
+      border: 1px solid var(--challenge-glow);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.5rem;
+      margin-top: 1.5rem;
+      color: var(--challenge);
+      font-weight: 600;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    /* Modal */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -572,7 +637,7 @@
 
       .tab {
         padding: 0.4rem 0.8rem;
-        font-size: 0.75rem;
+        font-size: 0.7rem;
       }
     }
   </style>
@@ -593,6 +658,7 @@
           <button class="tab" data-list="demon-unverified">Unverified Demon List</button>
           <button class="tab" data-list="challenge-verified">Challenge List</button>
           <button class="tab" data-list="challenge-unverified">Unverified Challenge List</button>
+          <button class="tab" data-list="rules">Rules</button>
         </div>
         <button class="icon-btn" id="themeToggle" title="Switch to light theme">Light</button>
       </div>
@@ -603,7 +669,7 @@
     <div class="hero">
       <div class="hero-badge demon-verified" id="heroBadge">VERIFIED</div>
       <h2 id="heroTitle">Demon List</h2>
-      <div class="hero-stats">
+      <div class="hero-stats" id="heroStats">
         <div class="stat">
           <div class="stat-value" id="statCount">0</div>
           <div class="stat-label">Levels</div>
@@ -615,11 +681,13 @@
       </div>
     </div>
 
-    <div class="list-container" id="listContainer">
-      <div class="empty-state">
-        <div class="icon">#</div>
-        <p>No levels listed yet</p>
-        <span>Check back soon for updates</span>
+    <div id="contentContainer">
+      <div class="list-container" id="listContainer">
+        <div class="empty-state">
+          <div class="icon">#</div>
+          <p>No levels listed yet</p>
+          <span>Check back soon for updates</span>
+        </div>
       </div>
     </div>
   </main>
@@ -647,61 +715,33 @@
 
   <script>
     // ============================================================
-    // FOUR LISTS
+    // FOUR LISTS + RULES
     // ============================================================
     const DEMON_VERIFIED = [
-      {
-        name: "Dreamstep",
-        creator: "noc621",
-        verifier: "Knockie",
-        videoUrl: "https://youtu.be/bF1U4AYQtPk",
-        id: "130175576"
-      },
+      { name: "Dreamstep", creator: "noc621", verifier: "Knockie", videoUrl: "https://youtu.be/bF1U4AYQtPk", id: "130175576" },
     ];
 
     const DEMON_UNVERIFIED = [
-      {
-        name: "Phycadelica",
-        creator: "Thetryguys",
-        verifier: "",
-        videoUrl: "https://youtu.be/K4_L0G7vWbM",
-        id: "134063849"
-      },
-      {
-        name: "Thermos",
-        creator: "vilkabereal",
-        verifier: "",
-        videoUrl: "https://youtu.be/WbcQKI5eE2Y",
-        id: "142918264"
-      },
-      {
-        name: "Machine Park",
-        creator: "ModularGD",
-        verifier: "",
-        videoUrl: "https://www.youtube.com/watch?v=sVDgGVrt6c8",
-        id: "128216702"
-      },
+      { name: "Phycadelica", creator: "Thetryguys", verifier: "", videoUrl: "https://youtu.be/K4_L0G7vWbM", id: "134063849" },
+      { name: "Thermos", creator: "vilkabereal", verifier: "", videoUrl: "https://youtu.be/WbcQKI5eE2Y", id: "142918264" },
+      { name: "Machine Park", creator: "ModularGD", verifier: "", videoUrl: "https://www.youtube.com/watch?v=sVDgGVrt6c8", id: "128216702" },
     ];
 
     const CHALLENGE_VERIFIED = [
-      {
-        name: "Uncomfortable",
-        creator: "oxyo0",
-        verifier: "7u2",
-        videoUrl: "https://www.youtube.com/watch?v=3aDY4lfFdGk",
-        id: "140768797"
-      },
-      {
-        name: "Foggy",
-        creator: "rals2.",
-        verifier: "rals2.",
-        videoUrl: "https://youtu.be/9ukoSl6Lq7w",
-        id: "139711026"
-      },
+      { name: "Uncomfortable", creator: "oxyo0", verifier: "7u2", videoUrl: "https://www.youtube.com/watch?v=3aDY4lfFdGk", id: "140768797" },
+      { name: "Foggy", creator: "rals2.", verifier: "rals2.", videoUrl: "https://youtu.be/9ukoSl6Lq7w", id: "139711026" },
     ];
 
     const CHALLENGE_UNVERIFIED = [
       // { name: "", creator: "", verifier: "", videoUrl: "", id: "" },
+    ];
+
+    const RULES = [
+      "The level must NOT consist ENTIRELY of spam",
+      "The level should preferably not contain copypaste",
+      "Decorate however you want, even if it looks awful",
+      "Put effort into your levels",
+      "Have fun creating!",
     ];
     // ============================================================
 
@@ -724,6 +764,7 @@
         case "demon-unverified": return "Unverified Demon List";
         case "challenge-verified": return "Challenge List";
         case "challenge-unverified": return "Unverified Challenge List";
+        case "rules": return "Rules";
         default: return "Demon List";
       }
     }
@@ -734,6 +775,7 @@
         case "demon-unverified": return "demon-unverified";
         case "challenge-verified": return "challenge-verified";
         case "challenge-unverified": return "challenge-unverified";
+        case "rules": return "rules";
         default: return "demon-verified";
       }
     }
@@ -744,6 +786,7 @@
         case "demon-unverified": return "Unverified";
         case "challenge-verified": return "Verified";
         case "challenge-unverified": return "Unverified";
+        case "rules": return "Information";
         default: return "Verified";
       }
     }
@@ -757,13 +800,8 @@
 
     function updateThemeButton() {
       const btn = document.getElementById("themeToggle");
-      if (isDarkMode) {
-        btn.textContent = "Light";
-        btn.title = "Switch to light theme";
-      } else {
-        btn.textContent = "Dark";
-        btn.title = "Switch to dark theme";
-      }
+      btn.textContent = isDarkMode ? "Light" : "Dark";
+      btn.title = isDarkMode ? "Switch to light theme" : "Switch to dark theme";
     }
 
     function applyTheme() {
@@ -777,49 +815,74 @@
     }
 
     function render() {
-      const list = getList();
-      const container = document.getElementById("listContainer");
-
-      document.getElementById("statCount").textContent = list.length;
-      document.getElementById("statTop").textContent = list.length > 0 ? list[0].name : "---";
-
+      const container = document.getElementById("contentContainer");
+      const heroStats = document.getElementById("heroStats");
       const badge = document.getElementById("heroBadge");
+      
       badge.className = "hero-badge " + getBadgeClass();
       badge.textContent = getBadgeText();
       document.getElementById("heroTitle").textContent = getListTitle();
 
+      if (currentList === "rules") {
+        heroStats.style.display = "none";
+        container.innerHTML = `
+          <div class="rules-content">
+            <h3>Rules for getting your level on the list</h3>
+            ${RULES.map((rule, i) => `
+              <div class="rule-item">
+                <div class="rule-number">${i + 1}</div>
+                <div class="rule-text">${rule}</div>
+              </div>
+            `).join("")}
+            <div class="news-box">
+              Doggie got 13% on Grief???!!!!
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      heroStats.style.display = "flex";
+      const list = getList();
+
+      document.getElementById("statCount").textContent = list.length;
+      document.getElementById("statTop").textContent = list.length > 0 ? list[0].name : "---";
+
       if (list.length === 0) {
         container.innerHTML = `
-          <div class="empty-state">
-            <div class="icon">#</div>
-            <p>No levels listed yet</p>
-            <span>Check back soon for updates</span>
+          <div class="list-container">
+            <div class="empty-state">
+              <div class="icon">#</div>
+              <p>No levels listed yet</p>
+              <span>Check back soon for updates</span>
+            </div>
           </div>`;
         return;
       }
 
-      container.innerHTML = list
-        .map(
-          (d, i) => `
-        <div class="level-card" 
-             data-name="${d.name}" 
-             data-creator="${d.creator || "Unknown"}" 
-             data-verifier="${d.verifier || ""}" 
-             data-id="${d.id || ""}" 
-             data-video="${encodeURIComponent(d.videoUrl || "")}">
-          <div class="rank-badge ${getRankClass(i + 1)}">#${i + 1}</div>
-          <div class="level-info">
-            <div class="level-name">${d.name}</div>
-            <div class="level-creator">by ${d.creator || "Unknown"}</div>
-            <div class="level-meta">
-              ${d.verifier ? `Verified by ${d.verifier}` : ""} 
-              ${d.id ? ` \u00b7 ID: ${d.id}` : ""}
+      container.innerHTML = `
+        <div class="list-container">
+          ${list.map((d, i) => `
+            <div class="level-card" 
+                 data-name="${d.name}" 
+                 data-creator="${d.creator || "Unknown"}" 
+                 data-verifier="${d.verifier || ""}" 
+                 data-id="${d.id || ""}" 
+                 data-video="${encodeURIComponent(d.videoUrl || "")}">
+              <div class="rank-badge ${getRankClass(i + 1)}">#${i + 1}</div>
+              <div class="level-info">
+                <div class="level-name">${d.name}</div>
+                <div class="level-creator">by ${d.creator || "Unknown"}</div>
+                <div class="level-meta">
+                  ${d.verifier ? `Verified by ${d.verifier}` : ""} 
+                  ${d.id ? ` \u00b7 ID: ${d.id}` : ""}
+                </div>
+              </div>
+              <div class="play-icon">\u25b6</div>
             </div>
-          </div>
-          <div class="play-icon">\u25b6</div>
-        </div>`
-        )
-        .join("");
+          `).join("")}
+        </div>
+      `;
 
       document.querySelectorAll(".level-card").forEach((card) => {
         card.addEventListener("click", () => {
@@ -930,11 +993,7 @@
     });
 
     const savedTheme = localStorage.getItem("gddlk_theme");
-    if (savedTheme === "light") {
-      isDarkMode = false;
-    } else {
-      isDarkMode = true;
-    }
+    isDarkMode = savedTheme !== "light";
     applyTheme();
 
     render();
