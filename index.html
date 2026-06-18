@@ -623,10 +623,23 @@
     // FOUR LISTS
     // ============================================================
     const DEMON_VERIFIED = [
-      // { name: "", creator: "", verifier: "", videoUrl: "", id: "" },
+      {
+        name: "Dreamstep",
+        creator: "noc621",
+        verifier: "Knockie",
+        videoUrl: "https://youtu.be/bF1U4AYQtPk",
+        id: "130175576"
+      },
     ];
 
     const DEMON_UNVERIFIED = [
+      {
+        name: "Machine Park",
+        creator: "ModularGD",
+        verifier: "",
+        videoUrl: "https://www.youtube.com/watch?v=sVDgGVrt6c8",
+        id: "128216702"
+      },
       {
         name: "Phycadelica",
         creator: "Thetryguys",
@@ -762,7 +775,7 @@
               ${d.id ? ` \u00b7 ID: ${d.id}` : ""}
             </div>
           </div>
-          <div class="play-icon">▶</div>
+          <div class="play-icon">\u25b6</div>
         </div>`
         )
         .join("");
