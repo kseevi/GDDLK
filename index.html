@@ -430,18 +430,6 @@
       color: var(--text-secondary);
     }
 
-    .news-box {
-      background: var(--bg-card);
-      border: 1px solid var(--challenge-glow);
-      border-radius: var(--radius);
-      padding: 1.2rem 1.5rem;
-      margin-top: 1.5rem;
-      color: var(--challenge);
-      font-weight: 600;
-      text-align: center;
-      font-size: 0.95rem;
-    }
-
     /* Modal */
     .modal-overlay {
       display: none;
@@ -722,6 +710,7 @@
     ];
 
     const DEMON_UNVERIFIED = [
+      { name: "Revolution", creator: "oxyo0", verifier: "", videoUrl: "https://www.youtube.com/watch?v=HukLIaTYo-M", id: "134060764" },
       { name: "Phycadelica", creator: "Thetryguys", verifier: "", videoUrl: "https://youtu.be/K4_L0G7vWbM", id: "134063849" },
       { name: "Thermos", creator: "vilkabereal", verifier: "", videoUrl: "https://youtu.be/WbcQKI5eE2Y", id: "142918264" },
       { name: "Machine Park", creator: "ModularGD", verifier: "", videoUrl: "https://www.youtube.com/watch?v=sVDgGVrt6c8", id: "128216702" },
@@ -741,7 +730,8 @@
       "The level should preferably not contain copypaste",
       "Decorate however you want, even if it looks awful",
       "Put effort into your levels",
-      "Have fun creating!",
+      "bla bla bla",
+      "Doggie got 13% on Grief???!!!!",
     ];
     // ============================================================
 
@@ -834,9 +824,6 @@
                 <div class="rule-text">${rule}</div>
               </div>
             `).join("")}
-            <div class="news-box">
-              Doggie got 13% on Grief???!!!!
-            </div>
           </div>
         `;
         return;
