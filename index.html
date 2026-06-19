@@ -92,6 +92,35 @@
       50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.6); }
     }
 
+    .protection-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #0a0a0f;
+      z-index: 99999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 2rem;
+      color: #ef4444;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+
+    .protection-overlay.active {
+      display: flex;
+    }
+
+    .protection-overlay h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .protection-overlay p {
+      color: #8888a0;
+      font-size: 1.1rem;
+    }
+
     .header {
       background: var(--bg-secondary);
       border-bottom: 1px solid var(--border);
@@ -686,6 +715,11 @@
   </style>
 </head>
 <body>
+  <div class="protection-overlay" id="protectionOverlay">
+    <h1>Access Denied</h1>
+    <p>This site can only be accessed through the official domain.</p>
+  </div>
+
   <header class="header">
     <div class="header-inner">
       <div class="logo-group">
@@ -758,396 +792,45 @@
   </div>
 
   <script>
-    // ============================================================
-    // TRANSLATIONS
-    // ============================================================
-    const translations = {
-      en: {
-        logo: "Demon List",
-        tab1: "Demon List",
-        tab2: "Unverified Demons",
-        tab3: "Challenge List",
-        tab4: "Unverified Challenges",
-        tab5: "Rules",
-        badge_verified: "VERIFIED",
-        badge_unverified: "UNVERIFIED",
-        badge_rules: "INFORMATION",
-        title_demon: "Demon List",
-        title_demon_unverified: "Unverified Demon List",
-        title_challenge: "Challenge List",
-        title_challenge_unverified: "Unverified Challenge List",
-        title_rules: "Rules",
-        stat1: "Levels",
-        stat2: "Number 1",
-        empty1: "No levels listed yet",
-        empty2: "Check back soon for updates",
-        footer: "Geometry Dash Demon List",
-        rules_title: "Rules for getting your level on the list",
-        verified_by: "Verified by",
-        by: "by",
-        copy_id: "Click to copy ID",
-        copied: "Copied!",
-        verifier_label: "Verified by",
-        theme_light: "Light",
-        theme_dark: "Dark"
-      },
-      ru: {
-        logo: "Демон Лист",
-        tab1: "Демон Лист",
-        tab2: "Непроверенные Демоны",
-        tab3: "Челлендж Лист",
-        tab4: "Непроверенные Челленджи",
-        tab5: "Правила",
-        badge_verified: "ПРОВЕРЕНО",
-        badge_unverified: "НЕПРОВЕРЕНО",
-        badge_rules: "ИНФОРМАЦИЯ",
-        title_demon: "Демон Лист",
-        title_demon_unverified: "Непроверенный Демон Лист",
-        title_challenge: "Челлендж Лист",
-        title_challenge_unverified: "Непроверенный Челлендж Лист",
-        title_rules: "Правила",
-        stat1: "Уровней",
-        stat2: "Номер 1",
-        empty1: "Пока нет уровней",
-        empty2: "Скоро здесь будут обновления",
-        footer: "Geometry Dash Демон Лист",
-        rules_title: "Правила для попадания уровня в лист",
-        verified_by: "Проверен",
-        by: "от",
-        copy_id: "Нажми чтобы скопировать ID",
-        copied: "Скопировано!",
-        verifier_label: "Проверен",
-        theme_light: "Свет",
-        theme_dark: "Тьма"
-      }
-    };
+    const ALLOWED_DOMAINS = ['localhost','127.0.0.1','kseevi.github.io'];
+    function checkDomain(){const _0x=window.location.hostname;const _0x2=ALLOWED_DOMAINS.some(_0x3=>_0x===_0x3||_0x.endsWith('.'+_0x3));if(!_0x2){document.getElementById('protectionOverlay').classList.add('active');return false;}return true;}
 
-    // ============================================================
-    // DATA
-    // ============================================================
-    const DEMON_VERIFIED = [
-      { name: "Dreamstep", creator: "noc621", verifier: "Knockie", videoUrl: "https://youtu.be/bF1U4AYQtPk", id: "130175576" },
-    ];
+    const translations={en:{logo:"Demon List",tab1:"Demon List",tab2:"Unverified Demons",tab3:"Challenge List",tab4:"Unverified Challenges",tab5:"Rules",badge_verified:"VERIFIED",badge_unverified:"UNVERIFIED",badge_rules:"INFORMATION",title_demon:"Demon List",title_demon_unverified:"Unverified Demon List",title_challenge:"Challenge List",title_challenge_unverified:"Unverified Challenge List",title_rules:"Rules",stat1:"Levels",stat2:"Number 1",empty1:"No levels listed yet",empty2:"Check back soon for updates",footer:"Geometry Dash Demon List",rules_title:"Rules for getting your level on the list",verified_by:"Verified by",by:"by",copy_id:"Click to copy ID",copied:"Copied!",verifier_label:"Verified by",theme_light:"Light",theme_dark:"Dark"},ru:{logo:"Демон Лист",tab1:"Демон Лист",tab2:"Непроверенные Демоны",tab3:"Челлендж Лист",tab4:"Непроверенные Челленджи",tab5:"Правила",badge_verified:"ПРОВЕРЕНО",badge_unverified:"НЕПРОВЕРЕНО",badge_rules:"ИНФОРМАЦИЯ",title_demon:"Демон Лист",title_demon_unverified:"Непроверенный Демон Лист",title_challenge:"Челлендж Лист",title_challenge_unverified:"Непроверенный Челлендж Лист",title_rules:"Правила",stat1:"Уровней",stat2:"Номер 1",empty1:"Пока нет уровней",empty2:"Скоро здесь будут обновления",footer:"Geometry Dash Демон Лист",rules_title:"Правила для попадания уровня в лист",verified_by:"Проверен",by:"от",copy_id:"Нажми чтобы скопировать ID",copied:"Скопировано!",verifier_label:"Проверен",theme_light:"Свет",theme_dark:"Тьма"}};
 
-    const DEMON_UNVERIFIED = [
-      { name: "Phycadelica", creator: "Thetryguys", verifier: "", videoUrl: "https://youtu.be/K4_L0G7vWbM", id: "134063849" },
-      { name: "Musuko", creator: "vilkabereal", verifier: "", videoUrl: "https://youtu.be/aBYWYFPJ830", id: "142957739" },
-      { name: "Thermos", creator: "vilkabereal", verifier: "", videoUrl: "https://youtu.be/WbcQKI5eE2Y", id: "142918264" },
-      { name: "Machine Park", creator: "ModularGD", verifier: "", videoUrl: "https://www.youtube.com/watch?v=sVDgGVrt6c8", id: "128216702" },
-    ];
+    const DEMON_VERIFIED=[{name:"Dreamstep",creator:"noc621",verifier:"Knockie",videoUrl:"https://youtu.be/bF1U4AYQtPk",id:"130175576"}];
+    const DEMON_UNVERIFIED=[{name:"Phycadelica",creator:"Thetryguys",verifier:"",videoUrl:"https://youtu.be/K4_L0G7vWbM",id:"134063849"},{name:"Musuko",creator:"vilkabereal",verifier:"",videoUrl:"https://youtu.be/aBYWYFPJ830",id:"142957739"},{name:"Thermos",creator:"vilkabereal",verifier:"",videoUrl:"https://youtu.be/WbcQKI5eE2Y",id:"142918264"},{name:"Machine Park",creator:"ModularGD",verifier:"",videoUrl:"https://www.youtube.com/watch?v=sVDgGVrt6c8",id:"128216702"}];
+    const CHALLENGE_VERIFIED=[{name:"Uncomfortable",creator:"oxyo0",verifier:"7u2",videoUrl:"https://www.youtube.com/watch?v=3aDY4lfFdGk",id:"140768797"},{name:"Foggy",creator:"rals2.",verifier:"rals2.",videoUrl:"https://youtu.be/9ukoSl6Lq7w",id:"139711026"}];
+    const CHALLENGE_UNVERIFIED=[{name:"Retry",creator:"vilkabereal",verifier:"",videoUrl:"https://youtu.be/4CEu0mfNEuQ",id:"143001565"},{name:"Revolution",creator:"oxyo0",verifier:"",videoUrl:"https://www.youtube.com/watch?v=HukLIaTYo-M",id:"134060764"},{name:"Overclock",creator:"Radishoffical",verifier:"",videoUrl:"https://youtube.com/watch?v=Eq2LXxAbRwk",id:"141237195"}];
+    const RULES=["The level must NOT consist ENTIRELY of spam","The level should preferably not contain copypaste","Decorate however you want, even if it looks awful","Put effort into your levels","bla bla bla","Doggie got 13% on Grief???!!!!"];
+    const RULES_RU=["Уровень не должен состоять ПОЛНОСТЬЮ из спама","В уровне не должно быть копипасты, желательно","Декорируй как хочешь, даже если это ужасно","Старайтесь над уровнями","бла бла бла","Doggie got 13% on Grief???!!!!"];
 
-    const CHALLENGE_VERIFIED = [
-      { name: "Uncomfortable", creator: "oxyo0", verifier: "7u2", videoUrl: "https://www.youtube.com/watch?v=3aDY4lfFdGk", id: "140768797" },
-      { name: "Foggy", creator: "rals2.", verifier: "rals2.", videoUrl: "https://youtu.be/9ukoSl6Lq7w", id: "139711026" },
-    ];
+    let currentList="demon-verified",isDarkMode=true,currentLang="en";
+    function t(_0x){return translations[currentLang][_0x]||_0x;}
+    function getList(){switch(currentList){case"demon-verified":return DEMON_VERIFIED;case"demon-unverified":return DEMON_UNVERIFIED;case"challenge-verified":return CHALLENGE_VERIFIED;case"challenge-unverified":return CHALLENGE_UNVERIFIED;default:return DEMON_VERIFIED;}}
+    function getListTitle(){switch(currentList){case"demon-verified":return t("title_demon");case"demon-unverified":return t("title_demon_unverified");case"challenge-verified":return t("title_challenge");case"challenge-unverified":return t("title_challenge_unverified");case"rules":return t("title_rules");default:return t("title_demon");}}
+    function getBadgeClass(){switch(currentList){case"demon-verified":return"demon-verified";case"demon-unverified":return"demon-unverified";case"challenge-verified":return"challenge-verified";case"challenge-unverified":return"challenge-unverified";case"rules":return"rules";default:return"demon-verified";}}
+    function getBadgeText(){if(currentList==="rules")return t("badge_rules");return(currentList==="demon-verified"||currentList==="challenge-verified")?t("badge_verified"):t("badge_unverified");}
+    function getRankClass(_0x){if(_0x===1)return"top-1";if(_0x===2)return"top-2";if(_0x===3)return"top-3";return"";}
+    function updateLangButton(){document.getElementById("langToggle").textContent=currentLang==="en"?"RU":"EN";}
+    function applyLanguage(){document.querySelectorAll("[data-lang]").forEach(_0x=>{const _0x2=_0x.getAttribute("data-lang");if(translations[currentLang][_0x2]){_0x.textContent=translations[currentLang][_0x2];}});updateLangButton();render();}
+    function updateThemeButton(){const _0x=document.getElementById("themeToggle");_0x.textContent=isDarkMode?t("theme_light"):t("theme_dark");_0x.title=isDarkMode?"Switch to light theme":"Switch to dark theme";}
+    function applyTheme(){if(isDarkMode){document.body.classList.remove("light");}else{document.body.classList.add("light");}updateThemeButton();localStorage.setItem("gddlk_theme",isDarkMode?"dark":"light");}
+    function render(){const _0x=document.getElementById("contentContainer");const _0x2=document.getElementById("heroStats");const _0x3=document.getElementById("heroBadge");_0x3.className="hero-badge "+getBadgeClass();_0x3.textContent=getBadgeText();document.getElementById("heroTitle").textContent=getListTitle();if(currentList==="rules"){_0x2.style.display="none";const _0x4=currentLang==="ru"?RULES_RU:RULES;_0x.innerHTML='<div class="rules-content"><h3>'+t("rules_title")+'</h3>'+_0x4.map((_0x5,_0x6)=>'<div class="rule-item"><div class="rule-number">'+(_0x6+1)+'</div><div class="rule-text">'+_0x5+'</div></div>').join("")+'</div>';return;}_0x2.style.display="flex";const _0x7=getList();document.getElementById("statCount").textContent=_0x7.length;document.getElementById("statTop").textContent=_0x7.length>0?_0x7[0].name:"---";document.querySelectorAll("[data-lang]").forEach(_0x=>{const _0x2=_0x.getAttribute("data-lang");if(translations[currentLang][_0x2]){_0x.textContent=translations[currentLang][_0x2];}});if(_0x7.length===0){_0x.innerHTML='<div class="list-container"><div class="empty-state"><div class="icon">#</div><p>'+t("empty1")+'</p><span>'+t("empty2")+'</span></div></div>';return;}_0x.innerHTML='<div class="list-container">'+_0x7.map((_0x,_0x2)=>'<div class="level-card" data-name="'+_0x.name+'" data-creator="'+(_0x.creator||"Unknown")+'" data-verifier="'+(_0x.verifier||"")+'" data-id="'+(_0x.id||"")+'" data-video="'+encodeURIComponent(_0x.videoUrl||"")+'"><div class="rank-badge '+getRankClass(_0x2+1)+'">#'+(_0x2+1)+'</div><div class="level-info"><div class="level-name">'+_0x.name+'</div><div class="level-creator">'+t("by")+" "+(_0x.creator||"Unknown")+'</div><div class="level-meta">'+(_0x.verifier?t("verified_by")+" "+_0x.verifier:"")+(_0x.id?" \u00b7 ID: "+_0x.id:"")+'</div></div><div class="play-icon">\u25b6</div></div>').join("")+"</div>";document.querySelectorAll(".level-card").forEach(_0x=>{_0x.addEventListener("click",()=>{openVideo(_0x.dataset.name,_0x.dataset.creator,_0x.dataset.verifier,_0x.dataset.id,decodeURIComponent(_0x.dataset.video));});});}
+    function openVideo(_0x,_0x2,_0x3,_0x4,_0x5){document.getElementById("modalTitle").textContent=_0x;document.getElementById("modalCreator").textContent=t("by")+" "+(_0x2||"Unknown");const _0x6=document.getElementById("modalVerifier");if(_0x3){_0x6.style.display="block";_0x6.textContent=t("verified_by")+" "+_0x3;}else{_0x6.style.display="none";}const _0x7=document.getElementById("modalId");const _0x8=document.getElementById("modalIdValue");if(_0x4){_0x7.style.display="inline-block";_0x8.textContent=_0x4;_0x7.classList.remove("copied");_0x7.title=t("copy_id");_0x7.onclick=function(_0x9){_0x9.stopPropagation();navigator.clipboard.writeText(_0x4).then(()=>{_0x7.classList.add("copied");_0x7.title=t("copied");setTimeout(()=>{_0x7.classList.remove("copied");_0x7.title=t("copy_id");},1500);});};}else{_0x7.style.display="none";}const _0xa=document.getElementById("youtubeFrame");let _0xb="";if(_0x5){const _0xc=[/(?:youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{11})/,/(?:youtu\.be\/)([a-zA-Z0-9_-]{11})/,/(?:youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,/^([a-zA-Z0-9_-]{11})$/];for(const _0xd of _0xc){const _0xe=_0x5.match(_0xd);if(_0xe){_0xb=_0xe[1];break;}}}_0xa.src=_0xb?"https://www.youtube.com/embed/"+_0xb+"?autoplay=1&rel=0":"";document.getElementById("videoModal").classList.add("active");}
+    function closeVideo(){document.getElementById("videoModal").classList.remove("active");document.getElementById("youtubeFrame").src="";}
+    function switchList(_0x){if(currentList===_0x)return;currentList=_0x;document.querySelectorAll(".tab").forEach(_0x2=>{_0x2.classList.toggle("active",_0x2.dataset.list===_0x);});render();}
 
-    const CHALLENGE_UNVERIFIED = [
-      { name: "Revolution", creator: "oxyo0", verifier: "", videoUrl: "https://www.youtube.com/watch?v=HukLIaTYo-M", id: "134060764" },
-      { name: "Overclock", creator: "Radishoffical", verifier: "", videoUrl: "https://youtube.com/watch?v=Eq2LXxAbRwk", id: "141237195" },
-    ];
-
-    const RULES = [
-      "The level must NOT consist ENTIRELY of spam",
-      "The level should preferably not contain copypaste",
-      "Decorate however you want, even if it looks awful",
-      "Put effort into your levels",
-      "bla bla bla",
-      "Doggie got 13% on Grief???!!!!",
-    ];
-
-    const RULES_RU = [
-      "Уровень не должен состоять ПОЛНОСТЬЮ из спама",
-      "В уровне не должно быть копипасты, желательно",
-      "Декорируй как хочешь, даже если это ужасно",
-      "Старайтесь над уровнями",
-      "бла бла бла",
-      "Doggie got 13% on Grief???!!!!",
-    ];
-
-    // ============================================================
-    // STATE
-    // ============================================================
-    let currentList = "demon-verified";
-    let isDarkMode = true;
-    let currentLang = "en";
-
-    function t(key) {
-      return translations[currentLang][key] || key;
-    }
-
-    function getList() {
-      switch(currentList) {
-        case "demon-verified": return DEMON_VERIFIED;
-        case "demon-unverified": return DEMON_UNVERIFIED;
-        case "challenge-verified": return CHALLENGE_VERIFIED;
-        case "challenge-unverified": return CHALLENGE_UNVERIFIED;
-        default: return DEMON_VERIFIED;
-      }
-    }
-
-    function getListTitle() {
-      switch(currentList) {
-        case "demon-verified": return t("title_demon");
-        case "demon-unverified": return t("title_demon_unverified");
-        case "challenge-verified": return t("title_challenge");
-        case "challenge-unverified": return t("title_challenge_unverified");
-        case "rules": return t("title_rules");
-        default: return t("title_demon");
-      }
-    }
-
-    function getBadgeClass() {
-      switch(currentList) {
-        case "demon-verified": return "demon-verified";
-        case "demon-unverified": return "demon-unverified";
-        case "challenge-verified": return "challenge-verified";
-        case "challenge-unverified": return "challenge-unverified";
-        case "rules": return "rules";
-        default: return "demon-verified";
-      }
-    }
-
-    function getBadgeText() {
-      if (currentList === "rules") return t("badge_rules");
-      return (currentList === "demon-verified" || currentList === "challenge-verified") ? t("badge_verified") : t("badge_unverified");
-    }
-
-    function getRankClass(rank) {
-      if (rank === 1) return "top-1";
-      if (rank === 2) return "top-2";
-      if (rank === 3) return "top-3";
-      return "";
-    }
-
-    function updateLangButton() {
-      document.getElementById("langToggle").textContent = currentLang === "en" ? "RU" : "EN";
-    }
-
-    function applyLanguage() {
-      document.querySelectorAll("[data-lang]").forEach(el => {
-        const key = el.getAttribute("data-lang");
-        if (translations[currentLang][key]) {
-          el.textContent = translations[currentLang][key];
-        }
-      });
-      updateLangButton();
+    if(checkDomain()){
+      document.querySelectorAll(".tab").forEach(_0x=>{_0x.addEventListener("click",()=>switchList(_0x.dataset.list));});
+      document.getElementById("themeToggle").addEventListener("click",()=>{isDarkMode=!isDarkMode;applyTheme();});
+      document.getElementById("langToggle").addEventListener("click",()=>{currentLang=currentLang==="en"?"ru":"en";applyLanguage();localStorage.setItem("gddlk_lang",currentLang);});
+      document.getElementById("closeModal").addEventListener("click",closeVideo);
+      document.getElementById("videoModal").addEventListener("click",function(_0x){if(_0x.target===this)closeVideo();});
+      document.addEventListener("keydown",_0x=>{if(_0x.key==="Escape")closeVideo();});
+      const savedTheme=localStorage.getItem("gddlk_theme");isDarkMode=savedTheme!=="light";applyTheme();
+      const savedLang=localStorage.getItem("gddlk_lang");currentLang=savedLang||"en";applyLanguage();
       render();
     }
-
-    function updateThemeButton() {
-      const btn = document.getElementById("themeToggle");
-      btn.textContent = isDarkMode ? t("theme_light") : t("theme_dark");
-      btn.title = isDarkMode ? "Switch to light theme" : "Switch to dark theme";
-    }
-
-    function applyTheme() {
-      if (isDarkMode) {
-        document.body.classList.remove("light");
-      } else {
-        document.body.classList.add("light");
-      }
-      updateThemeButton();
-      localStorage.setItem("gddlk_theme", isDarkMode ? "dark" : "light");
-    }
-
-    function render() {
-      const container = document.getElementById("contentContainer");
-      const heroStats = document.getElementById("heroStats");
-      const badge = document.getElementById("heroBadge");
-      
-      badge.className = "hero-badge " + getBadgeClass();
-      badge.textContent = getBadgeText();
-      document.getElementById("heroTitle").textContent = getListTitle();
-
-      if (currentList === "rules") {
-        heroStats.style.display = "none";
-        const rulesArr = currentLang === "ru" ? RULES_RU : RULES;
-        container.innerHTML = `
-          <div class="rules-content">
-            <h3>${t("rules_title")}</h3>
-            ${rulesArr.map((rule, i) => `
-              <div class="rule-item">
-                <div class="rule-number">${i + 1}</div>
-                <div class="rule-text">${rule}</div>
-              </div>
-            `).join("")}
-          </div>
-        `;
-        return;
-      }
-
-      heroStats.style.display = "flex";
-      const list = getList();
-
-      document.getElementById("statCount").textContent = list.length;
-      document.getElementById("statTop").textContent = list.length > 0 ? list[0].name : "---";
-
-      document.querySelectorAll("[data-lang]").forEach(el => {
-        const key = el.getAttribute("data-lang");
-        if (translations[currentLang][key]) {
-          el.textContent = translations[currentLang][key];
-        }
-      });
-
-      if (list.length === 0) {
-        container.innerHTML = `
-          <div class="list-container">
-            <div class="empty-state">
-              <div class="icon">#</div>
-              <p>${t("empty1")}</p>
-              <span>${t("empty2")}</span>
-            </div>
-          </div>`;
-        return;
-      }
-
-      container.innerHTML = `
-        <div class="list-container">
-          ${list.map((d, i) => `
-            <div class="level-card" 
-                 data-name="${d.name}" 
-                 data-creator="${d.creator || "Unknown"}" 
-                 data-verifier="${d.verifier || ""}" 
-                 data-id="${d.id || ""}" 
-                 data-video="${encodeURIComponent(d.videoUrl || "")}">
-              <div class="rank-badge ${getRankClass(i + 1)}">#${i + 1}</div>
-              <div class="level-info">
-                <div class="level-name">${d.name}</div>
-                <div class="level-creator">${t("by")} ${d.creator || "Unknown"}</div>
-                <div class="level-meta">
-                  ${d.verifier ? t("verified_by") + " " + d.verifier : ""} 
-                  ${d.id ? ` \u00b7 ID: ${d.id}` : ""}
-                </div>
-              </div>
-              <div class="play-icon">\u25b6</div>
-            </div>
-          `).join("")}
-        </div>
-      `;
-
-      document.querySelectorAll(".level-card").forEach((card) => {
-        card.addEventListener("click", () => {
-          openVideo(
-            card.dataset.name,
-            card.dataset.creator,
-            card.dataset.verifier,
-            card.dataset.id,
-            decodeURIComponent(card.dataset.video)
-          );
-        });
-      });
-    }
-
-    function openVideo(name, creator, verifier, id, url) {
-      document.getElementById("modalTitle").textContent = name;
-      document.getElementById("modalCreator").textContent = t("by") + " " + (creator || "Unknown");
-      
-      const verifierEl = document.getElementById("modalVerifier");
-      if (verifier) {
-        verifierEl.style.display = "block";
-        verifierEl.textContent = t("verified_by") + " " + verifier;
-      } else {
-        verifierEl.style.display = "none";
-      }
-
-      const idContainer = document.getElementById("modalId");
-      const idValue = document.getElementById("modalIdValue");
-      if (id) {
-        idContainer.style.display = "inline-block";
-        idValue.textContent = id;
-        idContainer.classList.remove("copied");
-        idContainer.title = t("copy_id");
-        
-        idContainer.onclick = function(e) {
-          e.stopPropagation();
-          navigator.clipboard.writeText(id).then(() => {
-            idContainer.classList.add("copied");
-            idContainer.title = t("copied");
-            setTimeout(() => {
-              idContainer.classList.remove("copied");
-              idContainer.title = t("copy_id");
-            }, 1500);
-          });
-        };
-      } else {
-        idContainer.style.display = "none";
-      }
-
-      const frame = document.getElementById("youtubeFrame");
-      let videoId = "";
-
-      if (url) {
-        const patterns = [
-          /(?:youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{11})/,
-          /(?:youtu\.be\/)([a-zA-Z0-9_-]{11})/,
-          /(?:youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
-          /^([a-zA-Z0-9_-]{11})$/,
-        ];
-
-        for (const p of patterns) {
-          const match = url.match(p);
-          if (match) {
-            videoId = match[1];
-            break;
-          }
-        }
-      }
-
-      frame.src = videoId
-        ? `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`
-        : "";
-      document.getElementById("videoModal").classList.add("active");
-    }
-
-    function closeVideo() {
-      document.getElementById("videoModal").classList.remove("active");
-      document.getElementById("youtubeFrame").src = "";
-    }
-
-    function switchList(type) {
-      if (currentList === type) return;
-      currentList = type;
-
-      document.querySelectorAll(".tab").forEach((tab) => {
-        tab.classList.toggle("active", tab.dataset.list === type);
-      });
-
-      render();
-    }
-
-    document.querySelectorAll(".tab").forEach((tab) => {
-      tab.addEventListener("click", () => switchList(tab.dataset.list));
-    });
-
-    document.getElementById("themeToggle").addEventListener("click", () => {
-      isDarkMode = !isDarkMode;
-      applyTheme();
-    });
-
-    document.getElementById("langToggle").addEventListener("click", () => {
-      currentLang = currentLang === "en" ? "ru" : "en";
-      applyLanguage();
-      localStorage.setItem("gddlk_lang", currentLang);
-    });
-
-    document.getElementById("closeModal").addEventListener("click", closeVideo);
-    document.getElementById("videoModal").addEventListener("click", function (e) {
-      if (e.target === this) closeVideo();
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeVideo();
-    });
-
-    const savedTheme = localStorage.getItem("gddlk_theme");
-    isDarkMode = savedTheme !== "light";
-    applyTheme();
-
-    const savedLang = localStorage.getItem("gddlk_lang");
-    currentLang = savedLang || "en";
-    applyLanguage();
-
-    render();
   </script>
 </body>
 </html>
