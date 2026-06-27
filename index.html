@@ -195,16 +195,6 @@
       flex-wrap: wrap;
     }
 
-    /* Мобильная навигация */
-    .mobile-nav {
-      display: none;
-      width: 100%;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      padding: 0.5rem 0;
-      gap: 0.4rem;
-    }
-
     .tabs {
       display: flex;
       background: var(--bg-card);
@@ -694,255 +684,63 @@
       letter-spacing: 0.3px;
     }
 
-    /* Медиа-запросы */
     @media (min-width: 769px) {
-      .header {
-        padding: 1.2rem 2rem;
-      }
-
-      .header-inner {
-        gap: 1rem;
-      }
-
-      .logo-icon {
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
-        font-size: 1.5rem;
-      }
-
-      .logo-text h1 {
-        font-size: 1.5rem;
-      }
-
-      .logo-text span {
-        font-size: 0.75rem;
-        letter-spacing: 2px;
-      }
-
-      .tabs {
-        border-radius: 30px;
-        padding: 4px;
-      }
-
-      .tab {
-        padding: 0.5rem 1.2rem;
-        font-size: 0.82rem;
-        letter-spacing: 0.2px;
-      }
-
-      .icon-btn {
-        width: 42px;
-        height: 42px;
-        font-size: 1.2rem;
-      }
-
-      .lang-btn {
-        padding: 0.5rem 0.8rem;
-        font-size: 0.8rem;
-      }
-
-      .main-container {
-        padding: 2rem 1.5rem 4rem;
-      }
-
-      .hero {
-        margin-bottom: 2.5rem;
-      }
-
-      .hero-badge {
-        padding: 0.4rem 1rem;
-        font-size: 0.8rem;
-      }
-
-      .hero h2 {
-        margin-bottom: 0.5rem;
-      }
-
-      .hero-stats {
-        gap: 2rem;
-        margin-top: 1rem;
-      }
-
-      .stat-label {
-        font-size: 0.75rem;
-      }
-
-      .list-container {
-        gap: 0.5rem;
-      }
-
-      .level-card {
-        padding: 1rem 1.5rem;
-        gap: 1.2rem;
-      }
-
-      .level-card:hover {
-        background: var(--bg-card-hover);
-        border-color: var(--border-light);
-        transform: translateX(4px);
-        box-shadow: var(--shadow);
-      }
-
-      .level-card:active {
-        transform: translateX(4px);
-      }
-
-      .rank-badge {
-        font-size: 1.1rem;
-        min-width: 3rem;
-      }
-
-      .rank-badge.top-1 {
-        font-size: 1.2rem;
-      }
-
-      .level-name {
-        font-size: 1.1rem;
-      }
-
-      .level-creator {
-        font-size: 0.82rem;
-      }
-
-      .level-meta {
-        font-size: 0.7rem;
-      }
-
-      .play-icon {
-        font-size: 1.3rem;
-      }
-
-      .level-card:hover .play-icon {
-        opacity: 1;
-        transform: scale(1.1);
-      }
-
-      .rules-content {
-        padding: 2rem;
-      }
-
-      .rules-content h3 {
-        font-size: 1.4rem;
-        margin-bottom: 1.5rem;
-      }
-
-      .rule-item {
-        padding: 1rem 0;
-        gap: 1rem;
-      }
-
-      .rule-number {
-        font-size: 1.2rem;
-        min-width: 2rem;
-      }
-
-      .rule-item:hover .rule-number {
-        animation: pulse 0.5s;
-      }
-
-      .rule-text {
-        font-size: 0.95rem;
-        line-height: 1.6;
-      }
-
-      .modal-header {
-        padding: 1.5rem 1.8rem;
-      }
-
-      .modal-header h3 {
-        font-size: 1.4rem;
-      }
-
-      .modal-header .creator {
-        font-size: 0.9rem;
-      }
-
-      .modal-header .verifier {
-        font-size: 0.8rem;
-      }
-
-      .modal-id {
-        font-size: 0.8rem;
-        padding: 3px 8px;
-      }
-
-      .modal-close {
-        width: 36px;
-        height: 36px;
-        font-size: 1.2rem;
-      }
-
-      .empty-state {
-        padding: 4rem 2rem;
-      }
-
-      .empty-state .icon {
-        font-size: 4rem;
-      }
-
-      .empty-state p {
-        font-size: 1.1rem;
-      }
-
-      .empty-state span {
-        font-size: 0.85rem;
-      }
-
-      .footer {
-        padding: 1.5rem;
-        font-size: 0.8rem;
-        letter-spacing: 0.5px;
-      }
+      .header { padding: 1.2rem 2rem; }
+      .header-inner { gap: 1rem; }
+      .logo-icon { width: 44px; height: 44px; border-radius: 12px; font-size: 1.5rem; }
+      .logo-text h1 { font-size: 1.5rem; }
+      .logo-text span { font-size: 0.75rem; letter-spacing: 2px; }
+      .tabs { border-radius: 30px; padding: 4px; }
+      .tab { padding: 0.5rem 1.2rem; font-size: 0.82rem; letter-spacing: 0.2px; }
+      .icon-btn { width: 42px; height: 42px; font-size: 1.2rem; }
+      .lang-btn { padding: 0.5rem 0.8rem; font-size: 0.8rem; }
+      .main-container { padding: 2rem 1.5rem 4rem; }
+      .hero { margin-bottom: 2.5rem; }
+      .hero-badge { padding: 0.4rem 1rem; font-size: 0.8rem; }
+      .hero h2 { margin-bottom: 0.5rem; }
+      .hero-stats { gap: 2rem; margin-top: 1rem; }
+      .stat-label { font-size: 0.75rem; }
+      .list-container { gap: 0.5rem; }
+      .level-card { padding: 1rem 1.5rem; gap: 1.2rem; }
+      .level-card:hover { background: var(--bg-card-hover); border-color: var(--border-light); transform: translateX(4px); box-shadow: var(--shadow); }
+      .level-card:active { transform: translateX(4px); }
+      .rank-badge { font-size: 1.1rem; min-width: 3rem; }
+      .rank-badge.top-1 { font-size: 1.2rem; }
+      .level-name { font-size: 1.1rem; }
+      .level-creator { font-size: 0.82rem; }
+      .level-meta { font-size: 0.7rem; }
+      .play-icon { font-size: 1.3rem; }
+      .level-card:hover .play-icon { opacity: 1; transform: scale(1.1); }
+      .rules-content { padding: 2rem; }
+      .rules-content h3 { font-size: 1.4rem; margin-bottom: 1.5rem; }
+      .rule-item { padding: 1rem 0; gap: 1rem; }
+      .rule-number { font-size: 1.2rem; min-width: 2rem; }
+      .rule-item:hover .rule-number { animation: pulse 0.5s; }
+      .rule-text { font-size: 0.95rem; line-height: 1.6; }
+      .modal-header { padding: 1.5rem 1.8rem; }
+      .modal-header h3 { font-size: 1.4rem; }
+      .modal-header .creator { font-size: 0.9rem; }
+      .modal-header .verifier { font-size: 0.8rem; }
+      .modal-id { font-size: 0.8rem; padding: 3px 8px; }
+      .modal-close { width: 36px; height: 36px; font-size: 1.2rem; }
+      .empty-state { padding: 4rem 2rem; }
+      .empty-state .icon { font-size: 4rem; }
+      .empty-state p { font-size: 1.1rem; }
+      .empty-state span { font-size: 0.85rem; }
+      .footer { padding: 1.5rem; font-size: 0.8rem; letter-spacing: 0.5px; }
     }
 
     @media (max-width: 480px) {
-      .header-inner {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .header-actions {
-        justify-content: space-between;
-        width: 100%;
-      }
-
-      .tabs {
-        width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .tab {
-        flex-shrink: 0;
-      }
-
-      .level-card {
-        padding: 0.6rem 0.8rem;
-        gap: 0.6rem;
-        border-radius: 12px;
-      }
-
-      .rank-badge {
-        font-size: 0.8rem;
-        min-width: 2.2rem;
-      }
-
-      .level-name {
-        font-size: 0.85rem;
-      }
-
-      .level-creator {
-        font-size: 0.65rem;
-      }
-
-      .level-meta {
-        font-size: 0.6rem;
-      }
-
-      .play-icon {
-        font-size: 0.9rem;
-      }
+      .header-inner { flex-direction: column; align-items: stretch; }
+      .header-actions { justify-content: space-between; width: 100%; }
+      .tabs { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .tab { flex-shrink: 0; }
+      .level-card { padding: 0.6rem 0.8rem; gap: 0.6rem; border-radius: 12px; }
+      .rank-badge { font-size: 0.8rem; min-width: 2.2rem; }
+      .level-name { font-size: 0.85rem; }
+      .level-creator { font-size: 0.65rem; }
+      .level-meta { font-size: 0.6rem; }
+      .play-icon { font-size: 0.9rem; }
     }
   </style>
 </head>
@@ -1031,8 +829,8 @@
 
     const DEMON_VERIFIED=[{name:"Dreamstep",creator:"noc621",verifier:"Knockie",videoUrl:"https://youtu.be/bF1U4AYQtPk",id:"130175576"}];
     const DEMON_UNVERIFIED=[{name:"Phycadelica",creator:"Thetryguys",verifier:"",videoUrl:"https://youtu.be/K4_L0G7vWbM",id:"134063849"},{name:"Musuko",creator:"vilkabereal",verifier:"",videoUrl:"https://youtu.be/aBYWYFPJ830",id:"142957739"},{name:"F",creator:"vilkabereal",verifier:"",videoUrl:"https://youtu.be/tigeucHuD78",id:"143549286"},{name:"Machine Park",creator:"ModularGD",verifier:"",videoUrl:"https://www.youtube.com/watch?v=sVDgGVrt6c8",id:"128216702"}];
-    const CHALLENGE_VERIFIED=[{name:"Uncomfortable",creator:"oxyo0",verifier:"7u2",videoUrl:"https://www.youtube.com/watch?v=3aDY4lfFdGk",id:"140768797"},{name:"Foggy",creator:"rals2.",verifier:"rals2.",videoUrl:"https://youtu.be/9ukoSl6Lq7w",id:"139711026"}];
-    const CHALLENGE_UNVERIFIED=[{name:"Retry",creator:"vilkabereal",verifier:"",videoUrl:"https://youtu.be/4CEu0mfNEuQ",id:"143001565"},{name:"Revolution",creator:"oxyo0",verifier:"",videoUrl:"https://www.youtube.com/watch?v=HukLIaTYo-M",id:"134060764"},{name:"ggei deirf",creator:"vilkabereal",verifier:"",videoUrl:"https://youtu.be/TlRVrAqvE14",id:"143550019"},{name:"Overclock",creator:"Radishoffical",verifier:"",videoUrl:"https://youtube.com/watch?v=Eq2LXxAbRwk",id:"141237195"}];
+    const CHALLENGE_VERIFIED=[{name:"Uncomfortable",creator:"oxyo0",verifier:"7u2",videoUrl:"https://www.youtube.com/watch?v=3aDY4lfFdGk",id:"140768797"},{name:"Wave Carried",creator:"rals2.",verifier:"vilkabereal",videoUrl:"https://youtu.be/_fJimS0Y3_c",id:"143171063"},{name:"Foggy",creator:"rals2.",verifier:"rals2.",videoUrl:"https://youtu.be/9ukoSl6Lq7w",id:"139711026"}];
+    const CHALLENGE_UNVERIFIED=[{name:"Retry",creator:"vilkabereal",verifier:"",videoUrl:"https://youtu.be/4CEu0mfNEuQ",id:"143001565"},{name:"Revolution",creator:"oxyo0",verifier:"",videoUrl:"https://www.youtube.com/watch?v=HukLIaTYo-M",id:"134060764"},{name:"ggei deirf",creator:"vilkabereal",verifier:"",videoUrl:"https://youtu.be/TlRVrAqvE14",id:"143550019"},{name:"Overclock",creator:"Radishoffical",verifier:"",videoUrl:"https://youtube.com/watch?v=Eq2LXxAbRwk",id:"141237195"},{name:"Foggy Unnerfed",creator:"rals2.",verifier:"",videoUrl:"https://youtu.be/uDCf-x5n9hw",id:"143625553"}];
     const RULES=["The level must NOT consist ENTIRELY of spam","The level should preferably not contain copypaste","Decorate however you want, even if it looks awful","Put effort into your levels","bla bla bla","Doggie got 13% on Grief???!!!!"];
     const RULES_RU=["Уровень не должен состоять ПОЛНОСТЬЮ из спама","В уровне не должно быть копипасты, желательно","Декорируй как хочешь, даже если это ужасно","Старайтесь над уровнями","бла бла бла","Doggie got 13% on Grief???!!!!"];
 
