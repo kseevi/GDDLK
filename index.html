@@ -466,6 +466,35 @@
       text-overflow: ellipsis;
     }
 
+    /* YouTube Preview */
+    .level-preview {
+      width: 160px;
+      height: 90px;
+      border-radius: 10px;
+      overflow: hidden;
+      flex-shrink: 0;
+      position: relative;
+      background: #000;
+      border: 1px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .level-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+
+    .level-card:hover .level-preview img {
+      transform: scale(1.05);
+    }
+
+    .level-card:hover .level-preview {
+      border-color: var(--accent);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
     .play-icon {
       color: var(--accent);
       font-size: 1rem;
@@ -709,7 +738,7 @@
       .level-name { font-size: 1.1rem; }
       .level-creator { font-size: 0.82rem; }
       .level-meta { font-size: 0.7rem; }
-      .play-icon { font-size: 1.3rem; }
+      .level-preview { width: 180px; height: 101px; }
       .level-card:hover .play-icon { opacity: 1; transform: scale(1.1); }
       .rules-content { padding: 2rem; }
       .rules-content h3 { font-size: 1.4rem; margin-bottom: 1.5rem; }
@@ -740,6 +769,7 @@
       .level-name { font-size: 0.85rem; }
       .level-creator { font-size: 0.65rem; }
       .level-meta { font-size: 0.6rem; }
+      .level-preview { width: 100px; height: 56px; }
       .play-icon { font-size: 0.9rem; }
     }
   </style>
@@ -829,13 +859,14 @@
 
     const DEMON_VERIFIED=[{name:"Dreamstep",creator:"noc621",verifier:"Knockie",videoUrl:"https://youtu.be/bF1U4AYQtPk",id:"130175576"}];
     const DEMON_UNVERIFIED=[{name:"Phycadelica",creator:"Thetryguys",verifier:"",videoUrl:"https://youtu.be/K4_L0G7vWbM",id:"134063849"},{name:"Musuko",creator:"vilkabereal",verifier:"",videoUrl:"https://youtu.be/aBYWYFPJ830",id:"142957739"},{name:"F",creator:"vilkabereal",verifier:"",videoUrl:"https://youtu.be/tigeucHuD78",id:"143549286"},{name:"TheLurpySluperReborn",creator:"XYZmAxii",verifier:"",videoUrl:"https://www.youtube.com/watch?v=Oc-xaTgCa-I",id:"141526065"},{name:"Machine Park",creator:"ModularGD",verifier:"",videoUrl:"https://www.youtube.com/watch?v=sVDgGVrt6c8",id:"128216702"}];
-    const CHALLENGE_VERIFIED=[{name:"Uncomfortable",creator:"oxyo0",verifier:"7u2",videoUrl:"https://www.youtube.com/watch?v=3aDY4lfFdGk",id:"140768797"},{name:"Foggy",creator:"rals2.",verifier:"rals2.",videoUrl:"https://youtu.be/9ukoSl6Lq7w",id:"139711026"},{name:"Wave Carried",creator:"rals2.",verifier:"vilkabereal",videoUrl:"https://youtu.be/_fJimS0Y3_c",id:"143171063"},{name:"Recent Tab",creator:"vilkabereal",verifier:"vilkabereal",videoUrl:"https://youtu.be/kEIhtIO7E3o?si=kPeZFQSAjlFKyclm",id:"144607564"}];
+    const CHALLENGE_VERIFIED=[{name:"Uncomfortable",creator:"oxyo0",verifier:"7u2",videoUrl:"https://www.youtube.com/watch?v=3aDY4lfFdGk",id:"140768797"},{name:"Foggy",creator:"rals2.",verifier:"rals2.",videoUrl:"https://youtu.be/9ukoSl6Lq7w",id:"139711026"},{name:"Wave Carried",creator:"rals2.",verifier:"vilkabereal",videoUrl:"https://youtu.be/_fJimS0Y3_c",id:"143171063"},{name:"Recent Tab",creator:"vilkabereal",verifier:"vilkabereal",videoUrl:"https://youtu.be/kEIhtIO7E3o",id:"144607564"}];
     const CHALLENGE_UNVERIFIED=[{name:"Retry",creator:"vilkabereal",verifier:"",videoUrl:"https://youtu.be/4CEu0mfNEuQ",id:"143001565"},{name:"Revolution",creator:"oxyo0",verifier:"",videoUrl:"https://www.youtube.com/watch?v=HukLIaTYo-M",id:"134060764"},{name:"ggei deirf",creator:"vilkabereal",verifier:"",videoUrl:"https://youtu.be/TlRVrAqvE14",id:"143550019"},{name:"Overclock",creator:"Radishoffical",verifier:"",videoUrl:"https://youtube.com/watch?v=Eq2LXxAbRwk",id:"141237195"},{name:"Foggy Unnerfed",creator:"rals2.",verifier:"",videoUrl:"https://youtu.be/uDCf-x5n9hw",id:"143625553"},{name:"Every At The Hell",creator:"vilkabereal",verifier:"",videoUrl:"https://youtu.be/_XcWTCwA47E",id:"144524274"}];
     const RULES=["The level must NOT consist ENTIRELY of spam","The level should preferably not contain copypaste","Decorate however you want, even if it looks awful","Put effort into your levels","bla bla bla","Doggie got 13% on Grief???!!!!"];
     const RULES_RU=["Уровень не должен состоять ПОЛНОСТЬЮ из спама","В уровне не должно быть копипасты, желательно","Декорируй как хочешь, даже если это ужасно","Старайтесь над уровнями","бла бла бла","Doggie got 13% on Grief???!!!!"];
 
     let currentList="demon-verified",isDarkMode=true,currentLang="en";
     function t(_0x){return translations[currentLang][_0x]||_0x;}
+    function getYouTubeID(_0x){if(!_0x)return null;const _0x2=[/(?:youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{11})/,/(?:youtu\.be\/)([a-zA-Z0-9_-]{11})/,/(?:youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,/^([a-zA-Z0-9_-]{11})$/];for(const _0x3 of _0x2){const _0x4=_0x.match(_0x3);if(_0x4)return _0x4[1];}return null;}
     function getList(){switch(currentList){case"demon-verified":return DEMON_VERIFIED;case"demon-unverified":return DEMON_UNVERIFIED;case"challenge-verified":return CHALLENGE_VERIFIED;case"challenge-unverified":return CHALLENGE_UNVERIFIED;default:return DEMON_VERIFIED;}}
     function getListTitle(){switch(currentList){case"demon-verified":return t("title_demon");case"demon-unverified":return t("title_demon_unverified");case"challenge-verified":return t("title_challenge");case"challenge-unverified":return t("title_challenge_unverified");case"rules":return t("title_rules");default:return t("title_demon");}}
     function getBadgeClass(){switch(currentList){case"demon-verified":return"demon-verified";case"demon-unverified":return"demon-unverified";case"challenge-verified":return"challenge-verified";case"challenge-unverified":return"challenge-unverified";case"rules":return"rules";default:return"demon-verified";}}
@@ -845,7 +876,7 @@
     function applyLanguage(){document.querySelectorAll("[data-lang]").forEach(_0x=>{const _0x2=_0x.getAttribute("data-lang");if(translations[currentLang][_0x2]){_0x.textContent=translations[currentLang][_0x2];}});updateLangButton();render();}
     function updateThemeButton(){const _0x=document.getElementById("themeToggle");_0x.textContent=isDarkMode?t("theme_light"):t("theme_dark");_0x.title=isDarkMode?"Switch to light theme":"Switch to dark theme";}
     function applyTheme(){if(isDarkMode){document.body.classList.remove("light");}else{document.body.classList.add("light");}updateThemeButton();localStorage.setItem("gddlk_theme",isDarkMode?"dark":"light");}
-    function render(){const _0x=document.getElementById("contentContainer");const _0x2=document.getElementById("heroStats");const _0x3=document.getElementById("heroBadge");_0x3.className="hero-badge "+getBadgeClass();_0x3.textContent=getBadgeText();document.getElementById("heroTitle").textContent=getListTitle();if(currentList==="rules"){_0x2.style.display="none";const _0x4=currentLang==="ru"?RULES_RU:RULES;_0x.innerHTML='<div class="rules-content"><h3>'+t("rules_title")+'</h3>'+_0x4.map((_0x5,_0x6)=>'<div class="rule-item"><div class="rule-number">'+(_0x6+1)+'</div><div class="rule-text">'+_0x5+'</div></div>').join("")+'</div>';return;}_0x2.style.display="flex";const _0x7=getList();document.getElementById("statCount").textContent=_0x7.length;document.getElementById("statTop").textContent=_0x7.length>0?_0x7[0].name:"---";document.querySelectorAll("[data-lang]").forEach(_0x=>{const _0x2=_0x.getAttribute("data-lang");if(translations[currentLang][_0x2]){_0x.textContent=translations[currentLang][_0x2];}});if(_0x7.length===0){_0x.innerHTML='<div class="list-container"><div class="empty-state"><div class="icon">#</div><p>'+t("empty1")+'</p><span>'+t("empty2")+'</span></div></div>';return;}_0x.innerHTML='<div class="list-container">'+_0x7.map((_0x,_0x2)=>'<div class="level-card" data-name="'+_0x.name+'" data-creator="'+(_0x.creator||"Unknown")+'" data-verifier="'+(_0x.verifier||"")+'" data-id="'+(_0x.id||"")+'" data-video="'+encodeURIComponent(_0x.videoUrl||"")+'"><div class="rank-badge '+getRankClass(_0x2+1)+'">#'+(_0x2+1)+'</div><div class="level-info"><div class="level-name">'+_0x.name+'</div><div class="level-creator">'+t("by")+" "+(_0x.creator||"Unknown")+'</div><div class="level-meta">'+(_0x.verifier?t("verified_by")+" "+_0x.verifier:"")+(_0x.id?" · ID: "+_0x.id:"")+'</div></div><div class="play-icon">▶</div></div>').join("")+"</div>";document.querySelectorAll(".level-card").forEach(_0x=>{_0x.addEventListener("click",()=>{openVideo(_0x.dataset.name,_0x.dataset.creator,_0x.dataset.verifier,_0x.dataset.id,decodeURIComponent(_0x.dataset.video));});});}
+    function render(){const _0x=document.getElementById("contentContainer");const _0x2=document.getElementById("heroStats");const _0x3=document.getElementById("heroBadge");_0x3.className="hero-badge "+getBadgeClass();_0x3.textContent=getBadgeText();document.getElementById("heroTitle").textContent=getListTitle();if(currentList==="rules"){_0x2.style.display="none";const _0x4=currentLang==="ru"?RULES_RU:RULES;_0x.innerHTML='<div class="rules-content"><h3>'+t("rules_title")+'</h3>'+_0x4.map((_0x5,_0x6)=>'<div class="rule-item"><div class="rule-number">'+(_0x6+1)+'</div><div class="rule-text">'+_0x5+'</div></div>').join("")+'</div>';return;}_0x2.style.display="flex";const _0x7=getList();document.getElementById("statCount").textContent=_0x7.length;document.getElementById("statTop").textContent=_0x7.length>0?_0x7[0].name:"---";document.querySelectorAll("[data-lang]").forEach(_0x=>{const _0x2=_0x.getAttribute("data-lang");if(translations[currentLang][_0x2]){_0x.textContent=translations[currentLang][_0x2];}});if(_0x7.length===0){_0x.innerHTML='<div class="list-container"><div class="empty-state"><div class="icon">#</div><p>'+t("empty1")+'</p><span>'+t("empty2")+'</span></div></div>';return;}_0x.innerHTML='<div class="list-container">'+_0x7.map((_0x,_0x2)=>{const _0x8=getYouTubeID(_0x.videoUrl);const _0x9=_0x8?`<div class="level-preview"><img src="https://img.youtube.com/vi/${_0x8}/mqdefault.jpg" alt="Preview" loading="lazy"></div>`:'<div class="play-icon">▶</div>';return'<div class="level-card" data-name="'+_0x.name+'" data-creator="'+(_0x.creator||"Unknown")+'" data-verifier="'+(_0x.verifier||"")+'" data-id="'+(_0x.id||"")+'" data-video="'+encodeURIComponent(_0x.videoUrl||"")+'"><div class="rank-badge '+getRankClass(_0x2+1)+'">#'+(_0x2+1)+'</div><div class="level-info"><div class="level-name">'+_0x.name+'</div><div class="level-creator">'+t("by")+" "+(_0x.creator||"Unknown")+'</div><div class="level-meta">'+(_0x.verifier?t("verified_by")+" "+_0x.verifier:"")+(_0x.id?" · ID: "+_0x.id:"")+'</div></div>'+_0x9+'</div>';}).join("")+"</div>";document.querySelectorAll(".level-card").forEach(_0x=>{_0x.addEventListener("click",()=>{openVideo(_0x.dataset.name,_0x.dataset.creator,_0x.dataset.verifier,_0x.dataset.id,decodeURIComponent(_0x.dataset.video));});});}
     function openVideo(_0x,_0x2,_0x3,_0x4,_0x5){document.getElementById("modalTitle").textContent=_0x;document.getElementById("modalCreator").textContent=t("by")+" "+(_0x2||"Unknown");const _0x6=document.getElementById("modalVerifier");if(_0x3){_0x6.style.display="block";_0x6.textContent=t("verified_by")+" "+_0x3;}else{_0x6.style.display="none";}const _0x7=document.getElementById("modalId");const _0x8=document.getElementById("modalIdValue");if(_0x4){_0x7.style.display="inline-block";_0x8.textContent=_0x4;_0x7.classList.remove("copied");_0x7.title=t("copy_id");_0x7.onclick=function(_0x9){_0x9.stopPropagation();navigator.clipboard.writeText(_0x4).then(()=>{_0x7.classList.add("copied");_0x7.title=t("copied");setTimeout(()=>{_0x7.classList.remove("copied");_0x7.title=t("copy_id");},1500);});};}else{_0x7.style.display="none";}const _0xa=document.getElementById("youtubeFrame");let _0xb="";if(_0x5){const _0xc=[/(?:youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{11})/,/(?:youtu\.be\/)([a-zA-Z0-9_-]{11})/,/(?:youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,/^([a-zA-Z0-9_-]{11})$/];for(const _0xd of _0xc){const _0xe=_0x5.match(_0xd);if(_0xe){_0xb=_0xe[1];break;}}}_0xa.src=_0xb?"https://www.youtube.com/embed/"+_0xb+"?autoplay=1&rel=0":"";document.getElementById("videoModal").classList.add("active");}
     function closeVideo(){document.getElementById("videoModal").classList.remove("active");document.getElementById("youtubeFrame").src="";}
     function switchList(_0x){if(currentList===_0x)return;currentList=_0x;document.querySelectorAll(".tab").forEach(_0x2=>{_0x2.classList.toggle("active",_0x2.dataset.list===_0x);});render();}
